@@ -1,0 +1,17 @@
+Package: kwb.read
+Maintainer: Hauke Sonnenberg <hauke.sonnenberg@kompetenz-wasser.de>
+Imports: 
+    kwb.base, 
+    kwb.datetime, 
+    kwb.db, 
+    kwb.en13508.2, 
+    kwb.fakin, 
+    kwb.utils, 
+    xml2
+Author: Hauke Sonnenberg
+Version: 0.1.0.9000
+License: GPL
+Title: Functions reading specific input data, e.g. files provided by BWB
+Description: Functions reading specific input data, e.g. files provided by BWB. 
+    E.g. rain data (5 min values) and rain correction tables (on daily basis).
+RoxygenNote: 6.1.1
