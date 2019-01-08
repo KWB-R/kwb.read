@@ -8,6 +8,11 @@ Imports:
     kwb.fakin, 
     kwb.utils, 
     xml2
+Remotes:
+    github::kwb-r/kwb.base,
+    github::kwb-r/kwb.datetime, 
+    github::kwb-r/kwb.db, 
+    github::kwb-r/kwb.en13508.2
 Author: Hauke Sonnenberg
 Version: 0.1.0.9000
 License: GPL
