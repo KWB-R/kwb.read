@@ -80,6 +80,7 @@ BWB_rain_correction_types <- function()
 #'   between object ids and gauge names is returned in the attribute "gauges".
 #' 
 #' @examples 
+#' \dontrun{
 #' # Provide the path to an example file in this package
 #' file <- "Niederschlag_example.csv"
 #' file <- system.file("extdata", file, package = "kwb.read")
@@ -92,7 +93,7 @@ BWB_rain_correction_types <- function()
 #'   
 #' # Get the mapping between object IDs and gauge names from attribute "gauges"
 #' kwb.utils::getAttribute(correction.wide, "gauges")
-#' 
+#' }
 #' @export
 #' 
 read_BWB_rain_correction_long <- function(
