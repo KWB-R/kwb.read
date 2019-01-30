@@ -1,17 +1,32 @@
 Package: kwb.read
-Maintainer: Hauke Sonnenberg <hauke.sonnenberg@kompetenz-wasser.de>
-Imports: 
-    kwb.base, 
-    kwb.datetime, 
-    kwb.db, 
-    kwb.en13508.2, 
-    kwb.fakin, 
-    kwb.utils, 
-    xml2
+Title: Functions reading specific input data, e.g. files
+    provided by BWB
+Version: 0.0.0.9000
 Author: Hauke Sonnenberg
-Version: 0.1.0.9000
-License: GPL
-Title: Functions reading specific input data, e.g. files provided by BWB
-Description: Functions reading specific input data, e.g. files provided by BWB. 
-    E.g. rain data (5 min values) and rain correction tables (on daily basis).
+Maintainer: Hauke Sonnenberg
+    <hauke.sonnenberg@kompetenz-wasser.de>
+Description: Functions reading specific input data, e.g. files
+    provided by BWB.  E.g. rain data (5 min values) and rain correction
+    tables (on daily basis).
+License: MIT + file LICENSE
+URL: https://github.com/KWB-R/kwb.read
+BugReports: https://github.com/KWB-R/kwb.read/issues
+Imports: 
+    kwb.base,
+    kwb.datetime,
+    kwb.db,
+    kwb.en13508.2,
+    kwb.fakin,
+    kwb.utils,
+    xml2
+Suggests: 
+    covr
+Remotes: 
+    github::kwb-r/kwb.base,
+    github::kwb-r/kwb.datetime,
+    github::kwb-r/kwb.db,
+    github::kwb-r/kwb.en13508.2,
+    github::kwb-r/kwb.fakin,
+    github::kwb-r/kwb.utils
+Encoding: UTF-8
 RoxygenNote: 6.1.1

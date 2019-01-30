@@ -234,8 +234,9 @@ hsGetGsData1 <- function(
   result
 }
 
-# .hsReadAndCheck --------------------------------------------------------------
-
+#' .hsReadAndCheck --------------------------------------------------------------
+#' @keywords internal
+#' @noRd 
 .hsReadAndCheck <- function(csv, sep, dbg = FALSE)
 {
   # Read the CSV file into a data frame
@@ -251,8 +252,9 @@ hsGetGsData1 <- function(
   .removeEmptyRows(dataFrame = dataFrame, dbg = dbg)  
 }
 
-# .readGrabSampleCsvFile -------------------------------------------------------
-
+#' .readGrabSampleCsvFile -------------------------------------------------------
+#' @keywords internal
+#' @noRd 
 .readGrabSampleCsvFile <- function(
   csv, sep, ncol = .getMaxNumberOfFields(csv = csv, sep = sep, quote = quote), 
   quote = ""
@@ -504,6 +506,8 @@ hsGetGsData1 <- function(
 #' 
 #' Extract mpIdName, mpID, mpName from monitoring point string
 #' 
+#' @keywords internal
+#' @noRd 
 .hsMoniPointInfo <- function(
   stationLines, pattern = PATTERN_STATION(), dbg = FALSE
 ) 
@@ -523,6 +527,8 @@ hsGetGsData1 <- function(
 
 #' Extract parID, parName, parUnit from Parameter String
 #' 
+#' @keywords internal
+#' @noRd 
 .hsParInfo <- function(parLine, pattern = PATTERN_PARAMETER(), dbg = FALSE)
 {     
   kwb.utils::printIf(dbg, parLine, "Extracting par info from")
@@ -549,7 +555,8 @@ hsGetGsData1 <- function(
 # .hsCheckParInfo --------------------------------------------------------------
 
 #' Check Parameter Information for Ambiguities
-#' 
+#' @keywords internal
+#' @noRd 
 .hsCheckParInfo <- function(parInfo, repair = TRUE, dbg = FALSE)
 {
   ## Find and show duplicates (parameters with the same ID)

@@ -166,7 +166,8 @@ hsGetGsData2 <- function(
 # .hsExtractData ---------------------------------------------------------------
 
 #' Convert Data Types in Data Block
-#' 
+#' @keywords internal
+#' @noRd
 .hsExtractData <- function(data, dateFormat, dec) 
 {
   ## Parameter values, possibly with comma "," and starting with "<" or ">"

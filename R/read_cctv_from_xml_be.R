@@ -225,7 +225,7 @@ get_too_deep <- function(x, max_depth)
 # to_subdir_data ---------------------------------------------------------------
 to_subdir_data <- function(paths, column_names = NULL, dbg = FALSE)
 {
-  subdirs <- kwb.utils::asNoFactorDataFrame(kwb.fakin:::toSubdirMatrix(paths))
+  subdirs <- kwb.utils::asNoFactorDataFrame(kwb.fakin::toSubdirMatrix(paths))
   
   set_data_frame_column_names(subdirs, column_names)
 }

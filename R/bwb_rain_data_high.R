@@ -215,6 +215,11 @@ readAllBwbCumulativeHeights <- function(files.data, ..., dbg = TRUE)
 #' Remove 'Full' and Check for 'Key' Duplicates
 #' 
 #' @param x data frame with times in first column
+#' @param columns.key = names(x) 
+#' @param do.stop  = TRUE 
+#' @param dbg = TRUE
+#' @keywords internal
+#' @noRd
 #' 
 .removeDuplicates <- function(
   x, columns.key = names(x), do.stop = TRUE, dbg = TRUE
