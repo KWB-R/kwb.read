@@ -41,6 +41,7 @@ in the form of an Excel file. Save the file to CSV and run this function on
 that CSV file.
 }
 \examples{
+\dontrun{
 # Provide the path to an example file in this package
 file <- "Niederschlag_example.csv"
 file <- system.file("extdata", file, package = "kwb.read")
@@ -53,5 +54,5 @@ correction.long <- read_BWB_rain_correction_long(file, wide = FALSE)
   
 # Get the mapping between object IDs and gauge names from attribute "gauges"
 kwb.utils::getAttribute(correction.wide, "gauges")
-
+}
 }
