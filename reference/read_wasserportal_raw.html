@@ -118,7 +118,7 @@
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Download and Read Data from wasserportal.berlin.de</h1>
-    <small class="dont-index">Source: <a href='https://github.com/KWB-R/kwb.read/blob/master/R/read_from_wasserportal.R'><code>R/read_from_wasserportal.R</code></a></small>
+    <small class="dont-index">Source: <a href='https://github.com/KWB-R/kwb.read/blob/master/R/read_wasserportal_raw.R'><code>R/read_wasserportal_raw.R</code></a></small>
     <div class="hidden name"><code>read_wasserportal_raw.Rd</code></div>
     </div>
 
@@ -126,27 +126,38 @@
     <p>Download and Read Data from wasserportal.berlin.de</p>
     </div>
 
-    <pre class="usage"><span class='fu'>read_wasserportal_raw</span>(<span class='no'>station</span>, <span class='kw'>from_date</span> <span class='kw'>=</span> <span class='st'>"2019-01-01"</span>)</pre>
+    <pre class="usage"><span class='fu'>read_wasserportal_raw</span>(<span class='no'>station</span>,
+  <span class='kw'>variables</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/unlist.html'>unlist</a></span>(<span class='fu'><a href='get_wasserportal_variables.html'>get_wasserportal_variables</a></span>())[<span class='fl'>1</span>:<span class='fl'>4</span>],
+  <span class='kw'>from_date</span> <span class='kw'>=</span> <span class='st'>"2019-01-01"</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>station</th>
-      <td><p>station number, one of</p><dl class='dl-horizontal'>
-  <dt>601</dt><dd><p>MPS Berlin-Spandauer-Schifffahrtskanal</p></dd>
-  <dt>151</dt><dd><p>MPS Caprivibruecke</p></dd>
-  <dt>153</dt><dd><p>MPS Charlottenburg</p></dd>
-  <dt>509</dt><dd><p>MPS Landwehrkanal</p></dd>
-  <dt>504</dt><dd><p>MPS Neukoellner Schifffahrtskanal</p></dd>
-  <dt>414</dt><dd><p>MPS Teltowkanal</p></dd>
-  <dt>141</dt><dd><p>MS Muehlendammschleuse</p></dd>
-  <dt>111</dt><dd><p>MS Rahnsdorf</p></dd>
-  <dt>211</dt><dd><p>MS Schmoeckwitz</p></dd>
-  <dt>161</dt><dd><p>MS Sophienwerder</p></dd>
-  <dt>421</dt><dd><p>MS Teltow-Werft</p></dd>
-
-</dl></td>
+      <td><p>station number, one of</p><ul>
+<li><p>601: MPS Berlin-Spandauer-Schifffahrtskanal</p></li>
+<li><p>151: MPS Caprivibruecke</p></li>
+<li><p>153: MPS Charlottenburg</p></li>
+<li><p>509: MPS Landwehrkanal</p></li>
+<li><p>504: MPS Neukoellner Schifffahrtskanal</p></li>
+<li><p>414: MPS Teltowkanal</p></li>
+<li><p>141: MS Muehlendammschleuse</p></li>
+<li><p>111: MS Rahnsdorf</p></li>
+<li><p>211: MS Schmoeckwitz</p></li>
+<li><p>161: MS Sophienwerder</p></li>
+<li><p>421: MS Teltow-Werft</p></li>
+</ul></td>
+    </tr>
+    <tr>
+      <th>variables</th>
+      <td><p>vector of variable identifiers, each being one of</p><ul>
+<li><p>"t": Wassertemperatur</p></li>
+<li><p>"l": Leitfaehigkeit</p></li>
+<li><p>"p": pH_Wert</p></li>
+<li><p>"o": Sauerstoffgehalt</p></li>
+<li><p>"s": Sauerstoffsaettigung</p></li>
+</ul></td>
     </tr>
     <tr>
       <th>from_date</th>
@@ -162,33 +173,47 @@ which to request data</p></td>
   IMPORTANT: It is not yet clear how to interpret the timestamp, see example</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='co'># Get a list of available water quality stations</span>
+    <pre class="examples"><div class='input'><span class='co'># Get a list of available water quality stations and variables</span>
 <span class='no'>stations</span> <span class='kw'>&lt;-</span> <span class='kw pkg'>kwb.read</span><span class='kw ns'>::</span><span class='fu'><a href='https://rdrr.io/pkg/kwb.read/man/get_wasserportal_stations.html'>get_wasserportal_stations</a></span>()
-<span class='no'>temperature_raw</span> <span class='kw'>&lt;-</span> <span class='kw pkg'>kwb.read</span><span class='kw ns'>::</span><span class='fu'><a href='https://rdrr.io/pkg/kwb.read/man/read_wasserportal_raw.html'>read_wasserportal_raw</a></span>(<span class='no'>stations</span>$<span class='no'>MPS_Charlottenburg</span>)
+<span class='no'>variables</span> <span class='kw'>&lt;-</span> <span class='kw pkg'>kwb.read</span><span class='kw ns'>::</span><span class='fu'><a href='https://rdrr.io/pkg/kwb.read/man/get_wasserportal_variables.html'>get_wasserportal_variables</a></span>()
 
+<span class='co'># Read the raw timeseries</span>
+<span class='no'>temperature_raw</span> <span class='kw'>&lt;-</span> <span class='kw pkg'>kwb.read</span><span class='kw ns'>::</span><span class='fu'><a href='https://rdrr.io/pkg/kwb.read/man/read_wasserportal_raw.html'>read_wasserportal_raw</a></span>(
+  <span class='kw'>station</span> <span class='kw'>=</span> <span class='no'>stations</span>$<span class='no'>MPS_Charlottenburg</span>,
+  <span class='kw'>variables</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='no'>variables</span>$<span class='no'>Sauerstoffgehalt</span>, <span class='no'>variables</span>$<span class='no'>Leitfaehigkeit</span>),
+  <span class='kw'>from_date</span> <span class='kw'>=</span> <span class='st'>"2019-03-01"</span>
+)</div><div class='output co'>#&gt; Reading 'Sauerstoffgehalt' for station 153 (MPS_Charlottenburg) ... ok. (5.29s) 
+#&gt; Reading 'Leitfaehigkeit' for station 153 (MPS_Charlottenburg) ... ok. (4.89s) </div><div class='input'>
 <span class='co'># Look at the first few records</span>
-<span class='fu'><a href='https://rdrr.io/r/utils/head.html'>head</a></span>(<span class='no'>temperature_raw</span>)</div><div class='output co'>#&gt;              Datum Einzelwert
-#&gt; 1 01.01.2019 00:00       -777
-#&gt; 2 01.01.2019 00:15       -777
-#&gt; 3 01.01.2019 00:30       -777
-#&gt; 4 01.01.2019 00:45       -777
-#&gt; 5 01.01.2019 01:00       -777
-#&gt; 6 01.01.2019 01:15       -777</div><div class='input'>
+<span class='fu'><a href='https://rdrr.io/r/utils/head.html'>head</a></span>(<span class='no'>temperature_raw</span>)</div><div class='output co'>#&gt;              Datum Sauerstoffgehalt Leitfaehigkeit
+#&gt; 1 01.03.2019 00:00             -777           -777
+#&gt; 2 01.03.2019 00:15             -777           -777
+#&gt; 3 01.03.2019 00:30             -777           -777
+#&gt; 4 01.03.2019 00:45             -777           -777
+#&gt; 5 01.03.2019 01:00             -777           -777
+#&gt; 6 01.03.2019 01:15             -777           -777</div><div class='input'>
 <span class='co'># Check the metadata</span>
-<span class='kw pkg'>kwb.utils</span><span class='kw ns'>::</span><span class='fu'><a href='https://rdrr.io/pkg/kwb.utils/man/getAttribute.html'>getAttribute</a></span>(<span class='no'>temperature_raw</span>, <span class='st'>"metadata"</span>)</div><div class='output co'>#&gt; [1] "Stationsnummer: 153"              "Stationsname: MPS Charlottenburg"
-#&gt; [3] "Gewässer: Spree"                  "Wasssertemperatur in °C"         
-#&gt; [5] "Fehlwerte: -777"                 </div><div class='input'>
+<span class='kw pkg'>kwb.utils</span><span class='kw ns'>::</span><span class='fu'><a href='https://rdrr.io/pkg/kwb.utils/man/getAttribute.html'>getAttribute</a></span>(<span class='no'>temperature_raw</span>, <span class='st'>"metadata"</span>)</div><div class='output co'>#&gt; $Sauerstoffgehalt
+#&gt; [1] "Stationsnummer: 153"              "Stationsname: MPS Charlottenburg"
+#&gt; [3] "Gewässer: Spree"                  "Sauerstoffgehalt im mg/l"        
+#&gt; [5] "Fehlwerte: -777"                 
+#&gt; 
+#&gt; $Leitfaehigkeit
+#&gt; [1] "Stationsnummer: 153"              "Stationsname: MPS Charlottenburg"
+#&gt; [3] "Gewässer: Spree"                  "Leitfähigkeit in µS/cm"          
+#&gt; [5] "Fehlwerte: -777"                 
+#&gt; </div><div class='input'>
 <span class='co'># Set missing values to NA</span>
-<span class='no'>temperature_raw</span>$<span class='no'>Einzelwert</span>[<span class='no'>temperature_raw</span>$<span class='no'>Einzelwert</span> <span class='kw'>==</span> -<span class='fl'>777</span>] <span class='kw'>&lt;-</span> <span class='fl'>NA</span>
+<span class='no'>temperature_raw</span>[<span class='no'>temperature_raw</span> <span class='kw'>==</span> -<span class='fl'>777</span>] <span class='kw'>&lt;-</span> <span class='fl'>NA</span>
 
-<span class='co'># Look at the first few records</span>
-<span class='fu'><a href='https://rdrr.io/r/utils/head.html'>head</a></span>(<span class='no'>temperature_raw</span>)</div><div class='output co'>#&gt;              Datum Einzelwert
-#&gt; 1 01.01.2019 00:00         NA
-#&gt; 2 01.01.2019 00:15         NA
-#&gt; 3 01.01.2019 00:30         NA
-#&gt; 4 01.01.2019 00:45         NA
-#&gt; 5 01.01.2019 01:00         NA
-#&gt; 6 01.01.2019 01:15         NA</div><div class='input'>
+<span class='co'># Look at the first few records again</span>
+<span class='fu'><a href='https://rdrr.io/r/utils/head.html'>head</a></span>(<span class='no'>temperature_raw</span>)</div><div class='output co'>#&gt;              Datum Sauerstoffgehalt Leitfaehigkeit
+#&gt; 1 01.03.2019 00:00               NA             NA
+#&gt; 2 01.03.2019 00:15               NA             NA
+#&gt; 3 01.03.2019 00:30               NA             NA
+#&gt; 4 01.03.2019 00:45               NA             NA
+#&gt; 5 01.03.2019 01:00               NA             NA
+#&gt; 6 01.03.2019 01:15               NA             NA</div><div class='input'>
 <span class='co'># How to interpret the timestamp?</span>
 <span class='co'># Determine the days at which summer time starts and ends, respectivel</span>
 <span class='no'>switches</span> <span class='kw'>&lt;-</span> <span class='kw pkg'>kwb.datetime</span><span class='kw ns'>::</span><span class='fu'><a href='https://rdrr.io/pkg/kwb.datetime/man/date_range_CEST.html'>date_range_CEST</a></span>(<span class='fl'>2019</span>)
@@ -200,23 +225,23 @@ which to request data</p></td>
 <span class='no'>pattern</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/paste.html'>paste</a></span>(<span class='no'>switches</span>, <span class='st'>"0[1-4]"</span>, <span class='kw'>collapse</span> <span class='kw'>=</span> <span class='st'>"|"</span>)
 
 <span class='co'># Look at the data for these timestamps</span>
-<span class='no'>temperature_raw</span>[<span class='fu'><a href='https://rdrr.io/r/base/grep.html'>grepl</a></span>(<span class='no'>pattern</span>, <span class='no'>temperature_raw</span>$<span class='no'>Datum</span>), ]</div><div class='output co'>#&gt;                 Datum Einzelwert
-#&gt; 8549 31.03.2019 01:00         NA
-#&gt; 8550 31.03.2019 01:15         NA
-#&gt; 8551 31.03.2019 01:30         NA
-#&gt; 8552 31.03.2019 01:45         NA
-#&gt; 8553 31.03.2019 03:00         NA
-#&gt; 8554 31.03.2019 03:15         NA
-#&gt; 8555 31.03.2019 03:30         NA
-#&gt; 8556 31.03.2019 03:45         NA
-#&gt; 8557 31.03.2019 03:00         NA
-#&gt; 8558 31.03.2019 03:15         NA
-#&gt; 8559 31.03.2019 03:30         NA
-#&gt; 8560 31.03.2019 03:45         NA
-#&gt; 8561 31.03.2019 04:00         NA
-#&gt; 8562 31.03.2019 04:15         NA
-#&gt; 8563 31.03.2019 04:30         NA
-#&gt; 8564 31.03.2019 04:45         NA</div><div class='input'>
+<span class='no'>temperature_raw</span>[<span class='fu'><a href='https://rdrr.io/r/base/grep.html'>grepl</a></span>(<span class='no'>pattern</span>, <span class='no'>temperature_raw</span>$<span class='no'>Datum</span>), ]</div><div class='output co'>#&gt;                 Datum Sauerstoffgehalt Leitfaehigkeit
+#&gt; 2885 31.03.2019 01:00               NA             NA
+#&gt; 2886 31.03.2019 01:15               NA             NA
+#&gt; 2887 31.03.2019 01:30               NA             NA
+#&gt; 2888 31.03.2019 01:45               NA             NA
+#&gt; 2889 31.03.2019 03:00               NA             NA
+#&gt; 2890 31.03.2019 03:15               NA             NA
+#&gt; 2891 31.03.2019 03:30               NA             NA
+#&gt; 2892 31.03.2019 03:45               NA             NA
+#&gt; 2893 31.03.2019 03:00               NA             NA
+#&gt; 2894 31.03.2019 03:15               NA             NA
+#&gt; 2895 31.03.2019 03:30               NA             NA
+#&gt; 2896 31.03.2019 03:45               NA             NA
+#&gt; 2897 31.03.2019 04:00               NA             NA
+#&gt; 2898 31.03.2019 04:15               NA             NA
+#&gt; 2899 31.03.2019 04:30               NA             NA
+#&gt; 2900 31.03.2019 04:45               NA             NA</div><div class='input'>
 # The timestamps are not plausible, e.g. "31.03.2019 03:00" appears twice!
 </div></pre>
   </div>
