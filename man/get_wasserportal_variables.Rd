@@ -6,6 +6,10 @@
 \usage{
 get_wasserportal_variables(station = NULL)
 }
+\arguments{
+\item{station}{station id. If given, only variables that are available for 
+the given station are returned.}
+}
 \description{
 Get Names and IDs of the Variables of wasserportal.berlin.de
 }

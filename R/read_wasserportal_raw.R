@@ -39,8 +39,8 @@
 #' 
 #' # Read the raw timeseries
 #' temperature_raw <- kwb.read::read_wasserportal_raw(
-#'   station = stations$MPS_Charlottenburg, 
-#'   variables = c(variables$Sauerstoffgehalt, variables$Leitfaehigkeit), 
+#'   station = stations$MPS_Charlottenburg,
+#'   variables = c(variables["Sauerstoffgehalt"], variables["Leitfaehigkeit"]),
 #'   from_date = "2019-03-01"
 #' )
 #' 
@@ -202,6 +202,8 @@ get_wasserportal_stations <- function(type = "quality")
 
 #' Get Names and IDs of the Variables of wasserportal.berlin.de
 #' 
+#' @param station station id. If given, only variables that are available for 
+#'   the given station are returned.
 #' @export
 get_wasserportal_variables <- function(station = NULL)
 {

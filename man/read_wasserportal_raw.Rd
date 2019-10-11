@@ -49,8 +49,8 @@ variables <- kwb.read::get_wasserportal_variables()
 
 # Read the raw timeseries
 temperature_raw <- kwb.read::read_wasserportal_raw(
-  station = stations$MPS_Charlottenburg, 
-  variables = c(variables$Sauerstoffgehalt, variables$Leitfaehigkeit), 
+  station = stations$MPS_Charlottenburg,
+  variables = c(variables["Sauerstoffgehalt"], variables["Leitfaehigkeit"]),
   from_date = "2019-03-01"
 )
 
