@@ -4,7 +4,10 @@
 \alias{get_wasserportal_stations}
 \title{Get Names and IDs of the Stations of wasserportal.berlin.de}
 \usage{
-get_wasserportal_stations()
+get_wasserportal_stations(type = "quality")
+}
+\arguments{
+\item{type}{one of "quality", "level", "flow"}
 }
 \description{
 Get Names and IDs of the Stations of wasserportal.berlin.de

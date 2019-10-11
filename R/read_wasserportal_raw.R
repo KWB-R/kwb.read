@@ -71,8 +71,7 @@
 #' 
 #' # The timestamps are not plausible, e.g. "31.03.2019 03:00" appears twice!
 read_wasserportal_raw <- function(
-  station, 
-  variables = unlist(get_wasserportal_variables())[1:4], 
+  station, variables = get_wasserportal_variables(station), 
   from_date = "2019-01-01"
 )
 {
@@ -86,7 +85,7 @@ read_wasserportal_raw <- function(
   }
   
   variable_ids <- get_wasserportal_variables()
-  station_ids <- get_wasserportal_stations()
+  station_ids <- get_wasserportal_stations(type = NULL)
   
   stopifnot(all(station %in% station_ids))
   stopifnot(all(variables %in% variable_ids))
@@ -173,22 +172,30 @@ read_wasserportal_raw <- function(
 
 #' Get Names and IDs of the Stations of wasserportal.berlin.de
 #' 
+#' @param type one of "quality", "level", "flow"
 #' @export
-get_wasserportal_stations <- function()
+get_wasserportal_stations <- function(type = "quality")
 {
-  list(
-    MPS_Berlin_Spandauer_Schifffahrtskanal = 601,
-    MPS_Caprivibruecke = 151,
-    MPS_Charlottenburg = 153,
-    MPS_Landwehrkanal = 509,
-    MPS_Neukoellner_Schifffahrtskanal = 504,
-    MPS_Teltowkanal = 504,
-    MS_Muehlendammschleuse = 141,
-    MS_Rahnsdorf = 111,
-    MS_Schmoeckwitz = 211,
-    MS_Sophienwerder = 161,
-    MS_Teltow_Werft = 421
-  )
+  if (! is.null(type)) {
+    type <- match.arg(type, c("quality", "level", "flow"))  
+  }
+  
+  file <- "stations_wasserportal.csv"
+  
+  stations <- readPackageFile(file, fileEncoding = "UTF-8")
+  
+  get <- kwb.utils::selectColumns
+  
+  stations$id <- as.character(get(stations, "id"))
+  stations$name <- kwb.utils::hsSubstSpecChars(get(stations, "name"))
+  
+  is_available <- if (is.null(type)) {
+    seq_len(nrow(stations))
+  } else {
+    nzchar(get(stations, type))
+  }
+  
+  kwb.utils::toLookupList(data = get(stations, c("name", "id"))[is_available, ])
 }
 
 # get_wasserportal_variables ---------------------------------------------------
@@ -196,13 +203,29 @@ get_wasserportal_stations <- function()
 #' Get Names and IDs of the Variables of wasserportal.berlin.de
 #' 
 #' @export
-get_wasserportal_variables <- function()
+get_wasserportal_variables <- function(station = NULL)
 {
-  list(
-    Wassertemperatur = "t",
-    Leitfaehigkeit = "l",
-    pH_Wert = "p",
-    Sauerstoffgehalt = "o",
-    Sauerstoffsaettigung = "s"
+  variables <- list(
+    quality = c(
+      Wassertemperatur = "t",
+      Leitfaehigkeit = "l",
+      pH_Wert = "p",
+      Sauerstoffgehalt = "o",
+      Sauerstoffsaettigung = "s"
+    ),
+    level = c(Wasserstand = "w"),
+    flow = c(Durchfluss = "d")
   )
+  
+  types <- names(variables)
+  
+  if (! is.null(station)) {
+
+    types <- types[sapply(types, function(type) {
+      
+      station %in% get_wasserportal_stations(type)
+    })]
+  }
+  
+  unlist(lapply(types, function(element) variables[[element]]))
 }

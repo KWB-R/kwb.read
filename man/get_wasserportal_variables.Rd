@@ -4,7 +4,7 @@
 \alias{get_wasserportal_variables}
 \title{Get Names and IDs of the Variables of wasserportal.berlin.de}
 \usage{
-get_wasserportal_variables()
+get_wasserportal_variables(station = NULL)
 }
 \description{
 Get Names and IDs of the Variables of wasserportal.berlin.de
