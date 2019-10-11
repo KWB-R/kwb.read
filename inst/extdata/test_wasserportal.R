@@ -1,0 +1,42 @@
+if (FALSE)
+{
+  stations <- kwb.read::get_wasserportal_stations()
+  
+  qualities <- lapply(stations, kwb.read::read_wasserportal_raw)
+
+  str(qualities)
+  
+  quality_data <- dplyr::bind_rows(qualities, .id = "station")
+  quality_data$Einzelwert[quality_data$Einzelwert == -777] <- NA
+  quality_data$Datum <- as.POSIXct(quality_data$Datum, format = "%d.%m.%Y %H:%M")
+  
+  ggplot2::ggplot(
+    quality_data, ggplot2::aes_string(
+      x = "Datum", y = "Einzelwert", col = "station"
+    )
+  ) + ggplot2::geom_line()
+  
+  # Continue with one time series
+  quality <- qualities[[1]]
+  
+  # Check number of values per day
+  dates <- quality$Datum
+  
+  head(dates)
+  tail(dates)
+  
+  n_per_day <- table(substr(dates, 1, 10))
+  n_per_day[n_per_day != 96]
+  
+  dates[which(substr(dates, 1, 10) == "09.10.2018")]
+  
+  # Show days of time switch  
+  switch_days <- kwb.datetime::reformatTimestamp(
+    kwb.datetime::date_range_CEST(2019), 
+    old.format = "%Y-%m-%d", new.format = "%d.%m.%Y"
+  )
+  
+  pattern <- paste(switch_days, "0[1-4]", collapse = "|")
+  
+  quality[grepl(pattern, dates), ]
+}
