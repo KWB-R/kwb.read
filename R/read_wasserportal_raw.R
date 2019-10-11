@@ -72,7 +72,7 @@
 #' # The timestamps are not plausible, e.g. "31.03.2019 03:00" appears twice!
 read_wasserportal_raw <- function(
   station, 
-  variables = unlist(get_wasserportal_variables()), 
+  variables = unlist(get_wasserportal_variables())[1:4], 
   from_date = "2019-01-01"
 )
 {
@@ -102,8 +102,9 @@ read_wasserportal_raw <- function(
     if (! kwb.utils::allAreIdentical(date_vectors)) {
       
       kwb.utils::printIf(TRUE, lapply(date_vectors, range))
+      kwb.utils::printIf(TRUE, lengths(date_vectors))
       
-      stop("Not all requests return the same timestamp column!")
+      stop("Not all requests return the same timestamp column (see above)!")
     }
     
     result <- kwb.utils::noFactorDataFrame(Datum = dfs[[1]]$Datum)

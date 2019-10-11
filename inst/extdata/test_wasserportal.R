@@ -1,18 +1,23 @@
 if (FALSE)
 {
   stations <- kwb.read::get_wasserportal_stations()
+  #variables <- kwb.read::get_wasserportal_variables()[1:4]
   
-  qualities <- lapply(stations, kwb.read::read_wasserportal_raw)
+  qualities <- lapply(stations, function(station) {
+    try(kwb.read::read_wasserportal_raw(station)) #, variables))
+  })
 
   str(qualities)
   
-  quality_data <- dplyr::bind_rows(qualities, .id = "station")
-  quality_data$Einzelwert[quality_data$Einzelwert == -777] <- NA
+  failed <- sapply(qualities, inherits, "try-error")
+  
+  quality_data <- dplyr::bind_rows(qualities[! failed], .id = "station")
+  quality_data[quality_data == -777] <- NA
   quality_data$Datum <- as.POSIXct(quality_data$Datum, format = "%d.%m.%Y %H:%M")
   
   ggplot2::ggplot(
     quality_data, ggplot2::aes_string(
-      x = "Datum", y = "Einzelwert", col = "station"
+      x = "Datum", y = "Leitfaehigkeit", col = "station"
     )
   ) + ggplot2::geom_line()
   

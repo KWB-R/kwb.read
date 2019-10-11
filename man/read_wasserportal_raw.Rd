@@ -5,7 +5,7 @@
 \title{Download and Read Data from wasserportal.berlin.de}
 \usage{
 read_wasserportal_raw(station,
-  variables = unlist(get_wasserportal_variables()),
+  variables = unlist(get_wasserportal_variables())[1:4],
   from_date = "2019-01-01")
 }
 \arguments{
