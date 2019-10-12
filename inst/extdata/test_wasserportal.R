@@ -1,32 +1,36 @@
 if (FALSE)
 {
-  stations <- kwb.read::get_wasserportal_stations(type = "flow")[1:3]
+  stations <- kwb.read::get_wasserportal_stations(type = "quality")
   
-  data_at_station <- lapply(stations, function(station) {
-    try(kwb.read::read_wasserportal_raw(station))
+  all_dfs <- lapply(stations, function(station) {
+    try(kwb.read::read_wasserportal(station))
   })
 
-  failed <- sapply(data_at_station, inherits, "try-error")
+  failed <- sapply(all_dfs, inherits, "try-error")
   
-  data_valid <- data_at_station[! failed]
+  all_dfs[failed]
   
-  data <- dplyr::bind_rows(data_valid, .id = "station")
+  dfs <- all_dfs[! failed]
+
+  View(dfs$MPS_Caprivibruecke)
+    
+  lapply(dfs, function(df) table(diff(df$LocalDateTime)))
+  
+  indices <- which(diffs != 15)
+  
+  df[sort(unique(c(indices-1, indices, indices+1))), ]
+  
+  df[is.na(df$Sauerstoffsaettigung), ]
+  
+  data <- dplyr::bind_rows(dfs, .id = "station")
   
   data[data == -777] <- NA
   
-  df <- data_valid$Tiefwerder
-  
-  timestamps_raw <- kwb.datetime::reformatTimestamp(df$Datum, "%d.%m.%Y %H:%M")
-  
-  timestamps <- repair_timestamps(timestamps_raw)
-  
-  times <- kwb.datetime::textToEuropeBerlinPosix(timestamps, switches = FALSE)
-  
-  table(diff(times))
+  View(data)
+
+  df <- dfs$Tiefwerder
   
   kwb.datetime::isValidTimestampSequence(times)
-  
-  View(data)
   
   #data$Datum <- as.POSIXct(quality_data$Datum, format = "%d.%m.%Y %H:%M")
   
@@ -59,22 +63,4 @@ if (FALSE)
   pattern <- paste(switch_days, "0[1-4]", collapse = "|")
   
   quality[grepl(pattern, dates), ]
-}
-
-# repair_timestamps ------------------------------------------------------------
-repair_timestamps <- function(timestamps)
-{
-  stopifnot(all(kwb.datetime::hasTimeFormat(timestamps, "%Y-%m-%d %H:%M:%S")))
-  
-  duplicates <- timestamps[duplicated(timestamps)]
-  
-  paired_indices <- lapply(duplicates, function(x) which(timestamps == x))
-  
-  stopifnot(all(lengths(paired_indices) == 2))
-  
-  indices_subst <- sapply(paired_indices, "[", 1)
-  
-  timestamps[indices_subst] <- gsub(" 03", " 02", timestamps[indices_subst])
-  
-  timestamps
 }

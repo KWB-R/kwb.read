@@ -1,4 +1,4 @@
-# read_wasserportal_raw --------------------------------------------------------
+# read_wasserportal ------------------------------------------------------------
 
 #' Download and Read Data from wasserportal.berlin.de
 #' 
@@ -38,7 +38,7 @@
 #' variables <- kwb.read::get_wasserportal_variables()
 #' 
 #' # Read the raw timeseries
-#' temperature_raw <- kwb.read::read_wasserportal_raw(
+#' temperature_raw <- kwb.read::read_wasserportal(
 #'   station = stations$MPS_Charlottenburg,
 #'   variables = c(variables["Sauerstoffgehalt"], variables["Leitfaehigkeit"]),
 #'   from_date = "2019-03-01"
@@ -70,10 +70,59 @@
 #' temperature_raw[grepl(pattern, temperature_raw$Datum), ]
 #' 
 #' # The timestamps are not plausible, e.g. "31.03.2019 03:00" appears twice!
-read_wasserportal_raw <- function(
+read_wasserportal <- function(
   station, variables = get_wasserportal_variables(station), 
   from_date = "2019-01-01"
 )
+{
+  variable_ids <- get_wasserportal_variables()
+  station_ids <- get_wasserportal_stations(type = NULL)
+  
+  stopifnot(all(station %in% station_ids))
+  stopifnot(all(variables %in% variable_ids))
+
+  if (length(variables) > 1) {
+  
+    dfs <- lapply(variables, function(variable) {
+      #variable <- variables[1]
+      read_wasserportal_raw(station, variable, from_date)
+    })
+
+    date_vectors <- lapply(dfs, kwb.utils::selectColumns, "LocalDateTime")
+    
+    if (! kwb.utils::allAreIdentical(date_vectors)) {
+      message("Not all requests return the same timestamp column:")
+      kwb.utils::printIf(TRUE, lengths(date_vectors))
+    }
+
+    key_columns <- c("timestamp_raw", "timestamp_corr", "LocalDateTime")
+    
+    backbones <- lapply(dfs, kwb.utils::selectColumns, key_columns)
+    
+    backbone <- unique(do.call(rbind, backbones))
+
+    backbone <- backbone[order(backbone$LocalDateTime), ]
+
+    backbone$row <- seq_len(nrow(backbone))
+    
+    data_frames <- c(list(backbone), dfs)
+    
+    result <- kwb.utils::mergeAll(data_frames, by = key_columns, all.x = TRUE)
+    
+    result <- kwb.utils::removeColumns(result[order(result$row), ], "row.")
+    
+    names(result) <- gsub("Einzelwert\\.", "", names(result))
+    
+    metadata <- lapply(dfs, kwb.utils::getAttribute, "metadata")
+    
+    return(structure(result, metadata = metadata))
+  }
+
+  read_wasserportal_raw(station, variables, from_date)
+}
+
+# read_wasserportal_raw --------------------------------------------------------
+read_wasserportal_raw <- function(station, variable, from_date)
 {
   if (! inherits(from_date, "Date")) {
     
@@ -83,42 +132,15 @@ read_wasserportal_raw <- function(
       stop(call. = FALSE, "from_date cannot be converted to a Date object!")
     }
   }
-  
-  variable_ids <- get_wasserportal_variables()
+
+  stopifnot(length(station) == 1)
   station_ids <- get_wasserportal_stations(type = NULL)
-  
-  stopifnot(all(station %in% station_ids))
-  stopifnot(all(variables %in% variable_ids))
+  stopifnot(station %in% station_ids)
 
-  if (length(variables) > 1) {
-  
-    dfs <- lapply(
-      variables, read_wasserportal_raw, station = station, from_date = from_date
-    )
+  stopifnot(length(variable) == 1)
+  variable_ids <- get_wasserportal_variables(station)
+  stopifnot(variable %in% variable_ids)
 
-    date_vectors <- lapply(dfs, kwb.utils::selectColumns, "Datum")
-    
-    if (! kwb.utils::allAreIdentical(date_vectors)) {
-      
-      kwb.utils::printIf(TRUE, lapply(date_vectors, range))
-      kwb.utils::printIf(TRUE, lengths(date_vectors))
-      
-      stop("Not all requests return the same timestamp column (see above)!")
-    }
-    
-    result <- kwb.utils::noFactorDataFrame(Datum = dfs[[1]]$Datum)
-    
-    value_data <- do.call(data.frame, lapply(dfs, "[[", 2))
-    
-    names(value_data) <- names(variable_ids)[match(variables, variable_ids)]
-    
-    metadata <- lapply(dfs, kwb.utils::getAttribute, "metadata")
-    
-    names(metadata) <- names(value_data)
-      
-    return(structure(cbind(result, value_data), metadata = metadata))
-  }
-  
   # Helper function to read CSV
   read <- function(text, ...) utils::read.table(
     text = text, sep = ";", dec = ",", stringsAsFactors = FALSE, ...
@@ -126,7 +148,7 @@ read_wasserportal_raw <- function(
   
   url_base <- "https://wasserportal.berlin.de/station.php"
   
-  url <- sprintf("%s?anzeige=%sd&sstation=%s", url_base, variables, station)
+  url <- sprintf("%s?anzeige=%sd&sstation=%s", url_base, variable, station)
   
   # Format the start date
   sdatum <- format(from_date, format = "%d.%m.%Y")
@@ -138,7 +160,7 @@ read_wasserportal_raw <- function(
   response <- kwb.utils::catAndRun(
     sprintf(
       "Reading '%s' for station %s (%s)", 
-      names(variable_ids)[match(variables, unlist(variable_ids))], 
+      names(variable_ids)[match(variable, unlist(variable_ids))], 
       station, 
       names(station_ids)[match(station, unlist(station_ids))]
     ), 
@@ -162,6 +184,22 @@ read_wasserportal_raw <- function(
   
   # Name the data columns as given in the first columns of the header row
   names(data) <- header_fields[first_cols]
+  
+  raw_timestamps <- kwb.utils::selectColumns(data, "Datum")
+
+  data <- kwb.utils::renameColumns(data, list(Datum = "timestamp_raw"))
+  
+  data$timestamp_corr <- repair_wasserportal_timestamps(raw_timestamps)
+  
+  data$LocalDateTime <- kwb.datetime::textToEuropeBerlinPosix(
+    x = data$timestamp_raw,
+    format = "%d.%m.%Y %H:%M", 
+    switches = FALSE
+  )
+
+  data <- kwb.utils::moveColumnsToFront(data, c(
+    "timestamp_raw", "timestamp_corr", "LocalDateTime"
+  ))
   
   # Return the data frame with the additional fields of the header row as
   # meta information in attribute "metadata"
@@ -230,4 +268,34 @@ get_wasserportal_variables <- function(station = NULL)
   }
   
   unlist(lapply(types, function(element) variables[[element]]))
+}
+
+# repair_wasserportal_timestamps -----------------------------------------------
+repair_wasserportal_timestamps <- function(timestamps, dbg = FALSE)
+{
+  duplicates <- timestamps[duplicated(timestamps)]
+  
+  index_pairs <- lapply(duplicates, function(x) which(timestamps == x))
+  
+  stopifnot(all(lengths(index_pairs) == 2))
+  
+  first_indices <- sapply(index_pairs, kwb.utils::firstElement)
+  
+  stopifnot(all(grepl(" 03", timestamps[first_indices])))
+  
+  timestamps_old <- timestamps
+  
+  timestamps[first_indices] <- gsub(" 03", " 02", timestamps[first_indices])
+  
+  indices <- sort(unlist(index_pairs))
+
+  kwb.utils::printIf(dbg, caption = "After timestamp repair", data.frame(
+    row = indices, 
+    old = timestamps_old[indices], 
+    new = timestamps[indices]
+  ))
+  
+  stopifnot(! any(duplicated(timestamps)))
+  
+  timestamps
 }
