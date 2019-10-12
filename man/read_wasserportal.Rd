@@ -6,7 +6,7 @@
 \usage{
 read_wasserportal(station,
   variables = get_wasserportal_variables(station),
-  from_date = "2019-01-01")
+  from_date = "2019-01-01", include_raw_time = FALSE)
 }
 \arguments{
 \item{station}{station number, one of \itemize{
@@ -34,6 +34,10 @@ read_wasserportal(station,
 \item{from_date}{\code{Date} object (or string in format "yyyy-mm-dd" that 
 can be converted to a \code{Date} object representing the first day for
 which to request data}
+
+\item{include_raw_time}{if \code{TRUE} the original time column and the 
+column with the corrected winter time are included in the output. The
+default is \code{FALSE}.}
 }
 \value{
 data frame read from the CSV file that the download provides. 

@@ -27,6 +27,9 @@
 #' @param from_date \code{Date} object (or string in format "yyyy-mm-dd" that 
 #'   can be converted to a \code{Date} object representing the first day for
 #'   which to request data
+#' @param include_raw_time if \code{TRUE} the original time column and the 
+#'   column with the corrected winter time are included in the output. The
+#'   default is \code{FALSE}.
 #' @return data frame read from the CSV file that the download provides. 
 #'   IMPORTANT: It is not yet clear how to interpret the timestamp, see example
 #' @importFrom httr POST content
@@ -72,11 +75,11 @@
 #' # The timestamps are not plausible, e.g. "31.03.2019 03:00" appears twice!
 read_wasserportal <- function(
   station, variables = get_wasserportal_variables(station), 
-  from_date = "2019-01-01"
+  from_date = "2019-01-01", include_raw_time = FALSE
 )
 {
   #kwb.utils::assignPackageObjects("kwb.read")
-  #variables = get_wasserportal_variables(station);from_date = "2019-01-01"
+  #variables = get_wasserportal_variables(station);from_date = "2019-01-01";include_raw_time = FALSE
   
   variable_ids <- get_wasserportal_variables()
   station_ids <- get_wasserportal_stations(type = NULL)
@@ -86,12 +89,13 @@ read_wasserportal <- function(
 
   names(variables) <- names(variable_ids)[match(variables, variable_ids)]
   
-  dfs <- lapply(variables, function(variable) {
-    #variable <- variables[1]
-    df <- read_wasserportal_raw(station, variable, from_date)
-    stopifnot(! any(duplicated(df$LocalDateTime)))
-    df
-  })
+  dfs <- lapply(
+    X = variables, 
+    FUN = read_wasserportal_raw, 
+    station = station, 
+    from_date = from_date, 
+    include_raw_time = include_raw_time
+  )
   
   date_vectors <- lapply(dfs, kwb.utils::selectColumns, "LocalDateTime")
   
@@ -100,19 +104,24 @@ read_wasserportal <- function(
     kwb.utils::printIf(TRUE, lengths(date_vectors))
   }
   
-  keys <- c("timestamp_raw", "timestamp_corr", "LocalDateTime")
+  keys <- c(
+    if (include_raw_time) c("timestamp_raw", "timestamp_corr"), 
+    "LocalDateTime"
+  )
   
-  backbones <- lapply(dfs, kwb.utils::selectColumns, keys)
+  backbones <- lapply(dfs, kwb.utils::selectColumns, keys, drop = FALSE)
   
   backbone <- unique(do.call(rbind, backbones))
   
-  backbone <- backbone[order(backbone$LocalDateTime), ]
+  backbone <- backbone[order(backbone$LocalDateTime), , drop = FALSE]
   
   backbone$row <- seq_len(nrow(backbone))
   
   data_frames <- c(list(base = backbone), dfs)
   
-  result <- kwb.utils::mergeAll(data_frames, by = keys, all.x = TRUE)
+  result <- kwb.utils::mergeAll(
+    data_frames, by = keys, all.x = TRUE, dbg = FALSE
+  )
   
   result <- kwb.utils::removeColumns(result[order(result$row), ], "row.base")
   
@@ -133,8 +142,11 @@ read_wasserportal <- function(
 }
 
 # read_wasserportal_raw --------------------------------------------------------
-read_wasserportal_raw <- function(station, variable, from_date)
+read_wasserportal_raw <- function(
+  variable, station, from_date, include_raw_time = FALSE
+)
 {
+  #variable <- variables[2]
   from_date <- assert_date(from_date)
   
   stopifnot(length(station) == 1)
@@ -185,14 +197,27 @@ read_wasserportal_raw <- function(station, variable, from_date)
   data <- kwb.utils::renameColumns(data, list(Datum = "timestamp_raw"))
   
   data$timestamp_corr <- repair_wasserportal_timestamps(raw_timestamps)
+
+  data <- remove_remaining_duplicates(data)
   
   data$LocalDateTime <- kwb.datetime::textToEuropeBerlinPosix(
-    data$timestamp_corr, format = "%d.%m.%Y %H:%M", switches = FALSE
+    data$timestamp_corr, 
+    format = "%d.%m.%Y %H:%M", 
+    switches = FALSE, 
+    dbg = FALSE
   )
+
+  stopifnot(! any(duplicated(data$LocalDateTime)))
   
   keys <- c("timestamp_raw", "timestamp_corr", "LocalDateTime")
   
   data <- kwb.utils::moveColumnsToFront(data, keys)
+
+  if (! include_raw_time) {
+    data <- kwb.utils::removeColumns(data, keys[1:2])
+  }
+  
+  data <- remove_timestep_outliers(data, data$LocalDateTime, 60 * 15)
   
   # Return the data frame with the additional fields of the header row as
   # meta information in attribute "metadata"
@@ -293,7 +318,13 @@ repair_wasserportal_timestamps <- function(timestamps, dbg = FALSE)
   
   first_indices <- sapply(index_pairs, kwb.utils::firstElement)
   
-  stopifnot(all(grepl(" 03", timestamps[first_indices])))
+  if (dbg && ! all(is_expected <- grepl(" 03", timestamps[first_indices]))) {
+    
+    message(
+      "There are unexpected duplicated timestamps: ", 
+      kwb.utils::stringList(timestamps[first_indices][! is_expected])
+    )
+  }
   
   timestamps_old <- timestamps
   
@@ -307,7 +338,39 @@ repair_wasserportal_timestamps <- function(timestamps, dbg = FALSE)
     new = timestamps[indices]
   ))
   
-  stopifnot(! any(duplicated(timestamps)))
-  
   timestamps
+}
+
+# remove_remaining_duplicates --------------------------------------------------
+remove_remaining_duplicates <- function(data)
+{
+  timestamps <- kwb.utils::selectColumns(data, "timestamp_corr")
+  
+  is_duplicate <- duplicated(timestamps)
+  
+  if (any(is_duplicate)) {
+    
+    message("Removing rows with unexpected duplicated timestamps:")
+    print(data[is_duplicate, ])
+  }
+
+  data[! is_duplicate, ]
+}
+
+# remove_timestep_outliers -----------------------------------------------------
+remove_timestep_outliers <- function(data, timestamps, timestep = 15 * 60)
+{
+  stopifnot(inherits(timestamps, "POSIXct"))
+  stopifnot(nrow(data) == length(timestamps))
+  
+  is_outlier <- as.numeric(timestamps) %% timestep != 0
+
+  if (! any(is_outlier)) {
+    return(data)
+  }
+  
+  message("Removing rows with 'non-timestep-multiple' timestamps:")
+  print(data[is_outlier, ])
+  
+  data[! is_outlier, ]
 }

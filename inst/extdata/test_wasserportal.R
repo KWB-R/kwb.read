@@ -2,10 +2,11 @@ if (FALSE)
 {
   stations <- kwb.read::get_wasserportal_stations(type = "quality")
   
-  df <- kwb.read::read_wasserportal(station = stations[1])
-  df[is.na(df$Sauerstoffsaettigung), ]
-  
+  df <- kwb.read::read_wasserportal(station = stations$MS_Schmoeckwitz)
+
   View(df)
+  
+  df[sort(unique(unlist(lapply(df, function(x) which(is.na(x)))))), ]
   
   all_dfs <- lapply(stations, function(station) {
     try(kwb.read::read_wasserportal(station))
@@ -32,37 +33,11 @@ if (FALSE)
 
   df <- dfs$Tiefwerder
   
-  kwb.datetime::isValidTimestampSequence(times)
-  
-  #data$Datum <- as.POSIXct(quality_data$Datum, format = "%d.%m.%Y %H:%M")
+  kwb.datetime::isValidTimestampSequence(df$LocalDateTime)
   
   ggplot2::ggplot(
-    quality_data, ggplot2::aes_string(
-      x = "Datum", y = "Leitfaehigkeit", col = "station"
-    )
-  ) + ggplot2::geom_line()
+    data, ggplot2::aes_string(x = "LocalDateTime", y = "Durchfluss")
+  ) + ggplot2::geom_line() +
+    ggplot2::facet_wrap("station")
   
-  # Continue with one time series
-  quality <- qualities[[1]]
-  
-  # Check number of values per day
-  dates <- quality$Datum
-  
-  head(dates)
-  tail(dates)
-  
-  n_per_day <- table(substr(dates, 1, 10))
-  n_per_day[n_per_day != 96]
-  
-  dates[which(substr(dates, 1, 10) == "09.10.2018")]
-  
-  # Show days of time switch  
-  switch_days <- kwb.datetime::reformatTimestamp(
-    kwb.datetime::date_range_CEST(2019), 
-    old.format = "%Y-%m-%d", new.format = "%d.%m.%Y"
-  )
-  
-  pattern <- paste(switch_days, "0[1-4]", collapse = "|")
-  
-  quality[grepl(pattern, dates), ]
 }
