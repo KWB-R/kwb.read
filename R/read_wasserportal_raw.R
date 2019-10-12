@@ -2,28 +2,20 @@
 
 #' Download and Read Data from wasserportal.berlin.de
 #' 
-#' @param station station number, one of \itemize{
-#'   \item{601: MPS Berlin-Spandauer-Schifffahrtskanal}
-#'   \item{151: MPS Caprivibruecke}
-#'   \item{153: MPS Charlottenburg}
-#'   \item{509: MPS Landwehrkanal}
-#'   \item{504: MPS Neukoellner Schifffahrtskanal}
-#'   \item{414: MPS Teltowkanal}
-#'   \item{141: MS Muehlendammschleuse}
-#'   \item{111: MS Rahnsdorf}
-#'   \item{211: MS Schmoeckwitz}
-#'   \item{161: MS Sophienwerder}
-#'   \item{421: MS Teltow-Werft}
-#' }
+#' This function downloads and reads CSV files from wasserportal.berlin.de.
 #' 
-#' @param variables vector of variable identifiers, each being one of \itemize{
-#'   \item{"t": Wassertemperatur}
-#'   \item{"l": Leitfaehigkeit}
-#'   \item{"p": pH_Wert}
-#'   \item{"o": Sauerstoffgehalt}
-#'   \item{"s": Sauerstoffsaettigung}
-#' }
+#' The original timestamps (column \code{timestamps_raw} in the example below)
+#' are not all plausible, e.g. "31.03.2019 03:00" appears twice! They are
+#' corrected (column \code{timestamp_corr}) to represent a plausible sequence of
+#' timestamps in Berlin Normal Time (UTC+01) Finally, a valid POSIXct timestamp
+#' in timezone "Berlin/Europe" (UTC+01 in winter, UTC+02 in summer) is created,
+#' together with the additional information on the UTC offset (column
+#' \code{UTCOffset}, 1 in winter, 2 in summer).
 #' 
+#' @param station station number, as returned by 
+#'   \code{\link{get_wasserportal_stations}}
+#' @param variables vector of variable identifiers, as returned by 
+#'   \code{\link{get_wasserportal_variables}}
 #' @param from_date \code{Date} object (or string in format "yyyy-mm-dd" that 
 #'   can be converted to a \code{Date} object representing the first day for
 #'   which to request data
@@ -40,27 +32,28 @@
 #' stations <- kwb.read::get_wasserportal_stations()
 #' variables <- kwb.read::get_wasserportal_variables()
 #' 
-#' # Read the raw timeseries
-#' temperature_raw <- kwb.read::read_wasserportal(
+#' # Read the timeseries (multiple variables for one station)
+#' water_quality <- kwb.read::read_wasserportal(
 #'   station = stations$MPS_Charlottenburg,
 #'   variables = c(variables["Sauerstoffgehalt"], variables["Leitfaehigkeit"]),
-#'   from_date = "2019-03-01"
+#'   from_date = "2019-03-01", include_raw_time = TRUE
 #' )
 #' 
 #' # Look at the first few records
-#' head(temperature_raw)
+#' head(water_quality)
 #' 
 #' # Check the metadata
-#' kwb.utils::getAttribute(temperature_raw, "metadata")
+#' kwb.utils::getAttribute(water_quality, "metadata")
 #' 
 #' # Set missing values to NA
-#' temperature_raw[temperature_raw == -777] <- NA
+#' water_quality[water_quality == -777] <- NA
 #' 
 #' # Look at the first few records again
-#' head(temperature_raw)
+#' head(water_quality)
 #' 
-#' # How to interpret the timestamp?
-#' # Determine the days at which summer time starts and ends, respectivel
+#' ### How was the original timestamp interpreted?
+#' 
+#' # Determine the days at which summer time starts and ends, respectively
 #' switches <- kwb.datetime::date_range_CEST(2019)
 #' 
 #' # Reformat to dd.mm.yyyy
@@ -70,9 +63,11 @@
 #' pattern <- paste(switches, "0[1-4]", collapse = "|")
 #' 
 #' # Look at the data for these timestamps
-#' temperature_raw[grepl(pattern, temperature_raw$Datum), ]
+#' water_quality[grepl(pattern, water_quality$timestamp_raw), ]
 #' 
-#' # The timestamps are not plausible, e.g. "31.03.2019 03:00" appears twice!
+#' # The original timestamps (timestamps_raw) are not all plausible, e.g. 
+#' # "31.03.2019 03:00" appears twice! See the Details in ?read_wasserportal()
+#' # how this is treated.
 read_wasserportal <- function(
   station, variables = get_wasserportal_variables(station), 
   from_date = "2019-01-01", include_raw_time = FALSE
