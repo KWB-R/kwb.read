@@ -75,80 +75,83 @@ read_wasserportal <- function(
   from_date = "2019-01-01"
 )
 {
+  #kwb.utils::assignPackageObjects("kwb.read")
+  #variables = get_wasserportal_variables(station);from_date = "2019-01-01"
+  
   variable_ids <- get_wasserportal_variables()
   station_ids <- get_wasserportal_stations(type = NULL)
   
   stopifnot(all(station %in% station_ids))
   stopifnot(all(variables %in% variable_ids))
 
-  if (length(variables) > 1) {
+  names(variables) <- names(variable_ids)[match(variables, variable_ids)]
   
-    dfs <- lapply(variables, function(variable) {
-      #variable <- variables[1]
-      read_wasserportal_raw(station, variable, from_date)
-    })
-
-    date_vectors <- lapply(dfs, kwb.utils::selectColumns, "LocalDateTime")
-    
-    if (! kwb.utils::allAreIdentical(date_vectors)) {
-      message("Not all requests return the same timestamp column:")
-      kwb.utils::printIf(TRUE, lengths(date_vectors))
-    }
-
-    key_columns <- c("timestamp_raw", "timestamp_corr", "LocalDateTime")
-    
-    backbones <- lapply(dfs, kwb.utils::selectColumns, key_columns)
-    
-    backbone <- unique(do.call(rbind, backbones))
-
-    backbone <- backbone[order(backbone$LocalDateTime), ]
-
-    backbone$row <- seq_len(nrow(backbone))
-    
-    data_frames <- c(list(backbone), dfs)
-    
-    result <- kwb.utils::mergeAll(data_frames, by = key_columns, all.x = TRUE)
-    
-    result <- kwb.utils::removeColumns(result[order(result$row), ], "row.")
-    
-    names(result) <- gsub("Einzelwert\\.", "", names(result))
-    
-    metadata <- lapply(dfs, kwb.utils::getAttribute, "metadata")
-    
-    return(structure(result, metadata = metadata))
+  dfs <- lapply(variables, function(variable) {
+    #variable <- variables[1]
+    df <- read_wasserportal_raw(station, variable, from_date)
+    stopifnot(! any(duplicated(df$LocalDateTime)))
+    df
+  })
+  
+  date_vectors <- lapply(dfs, kwb.utils::selectColumns, "LocalDateTime")
+  
+  if (length(variables) > 1 && ! kwb.utils::allAreIdentical(date_vectors)) {
+    message("Not all requests return the same timestamp column:")
+    kwb.utils::printIf(TRUE, lengths(date_vectors))
   }
+  
+  keys <- c("timestamp_raw", "timestamp_corr", "LocalDateTime")
+  
+  backbones <- lapply(dfs, kwb.utils::selectColumns, keys)
+  
+  backbone <- unique(do.call(rbind, backbones))
+  
+  backbone <- backbone[order(backbone$LocalDateTime), ]
+  
+  backbone$row <- seq_len(nrow(backbone))
+  
+  data_frames <- c(list(base = backbone), dfs)
+  
+  result <- kwb.utils::mergeAll(data_frames, by = keys, all.x = TRUE)
+  
+  result <- kwb.utils::removeColumns(result[order(result$row), ], "row.base")
+  
+  names(result) <- gsub("Einzelwert\\.", "", names(result))
+  
+  utc_offset <- kwb.datetime::utcOffset(
+    LocalDateTime = format(result$LocalDateTime), 
+    DateTimeUTC = format(result$LocalDateTime, tz = "UTC")
+  )
+  
+  result <- kwb.utils::insertColumns(
+    result, after = "LocalDateTime", UTCOffset = utc_offset
+  )
+  
+  metadata <- lapply(dfs, kwb.utils::getAttribute, "metadata")
 
-  read_wasserportal_raw(station, variables, from_date)
+  return(structure(result, metadata = metadata))
 }
 
 # read_wasserportal_raw --------------------------------------------------------
 read_wasserportal_raw <- function(station, variable, from_date)
 {
-  if (! inherits(from_date, "Date")) {
-    
-    from_date <- try(as.Date(from_date))
-    
-    if (inherits(from_date, "try-error")) {
-      stop(call. = FALSE, "from_date cannot be converted to a Date object!")
-    }
-  }
-
+  from_date <- assert_date(from_date)
+  
   stopifnot(length(station) == 1)
   station_ids <- get_wasserportal_stations(type = NULL)
   stopifnot(station %in% station_ids)
-
+  
   stopifnot(length(variable) == 1)
   variable_ids <- get_wasserportal_variables(station)
   stopifnot(variable %in% variable_ids)
-
+  
   # Helper function to read CSV
   read <- function(text, ...) utils::read.table(
     text = text, sep = ";", dec = ",", stringsAsFactors = FALSE, ...
   )
   
-  url_base <- "https://wasserportal.berlin.de/station.php"
-  
-  url <- sprintf("%s?anzeige=%sd&sstation=%s", url_base, variable, station)
+  progress <- get_wasserportal_text(station, variable, station_ids, variable_ids)
+  url <- get_wasserportal_url(station, variable)
   
   # Format the start date
   sdatum <- format(from_date, format = "%d.%m.%Y")
@@ -157,15 +160,7 @@ read_wasserportal_raw <- function(station, variable, from_date)
   body <- list(sreihe = "w", smode = "c", sdatum = sdatum)
   
   # Post the request to the web server
-  response <- kwb.utils::catAndRun(
-    sprintf(
-      "Reading '%s' for station %s (%s)", 
-      names(variable_ids)[match(variable, unlist(variable_ids))], 
-      station, 
-      names(station_ids)[match(station, unlist(station_ids))]
-    ), 
-    httr::POST(url, body = body)
-  )
+  response <- kwb.utils::catAndRun(progress, httr::POST(url, body = body))
   
   # Read the response of the web server as text
   text <- httr::content(response, as = "text", encoding = "Latin1")
@@ -186,24 +181,41 @@ read_wasserportal_raw <- function(station, variable, from_date)
   names(data) <- header_fields[first_cols]
   
   raw_timestamps <- kwb.utils::selectColumns(data, "Datum")
-
+  
   data <- kwb.utils::renameColumns(data, list(Datum = "timestamp_raw"))
   
   data$timestamp_corr <- repair_wasserportal_timestamps(raw_timestamps)
   
   data$LocalDateTime <- kwb.datetime::textToEuropeBerlinPosix(
-    x = data$timestamp_raw,
-    format = "%d.%m.%Y %H:%M", 
-    switches = FALSE
+    data$timestamp_corr, format = "%d.%m.%Y %H:%M", switches = FALSE
   )
-
-  data <- kwb.utils::moveColumnsToFront(data, c(
-    "timestamp_raw", "timestamp_corr", "LocalDateTime"
-  ))
+  
+  keys <- c("timestamp_raw", "timestamp_corr", "LocalDateTime")
+  
+  data <- kwb.utils::moveColumnsToFront(data, keys)
   
   # Return the data frame with the additional fields of the header row as
   # meta information in attribute "metadata"
   structure(data, metadata = header_fields[- first_cols])
+}
+
+# get_wasserportal_url ---------------------------------------------------------
+get_wasserportal_url <- function(station, variable)
+{
+  url_base <- "https://wasserportal.berlin.de/station.php"
+  
+  sprintf("%s?sstation=%s&anzeige=%sd", url_base, station, variable)
+}
+
+# get_wasserportal_text --------------------------------------------------------
+get_wasserportal_text <- function(station, variable, station_ids, variable_ids)
+{
+  sprintf(
+    "Reading '%s' for station %s (%s)", 
+    names(variable_ids)[match(variable, unlist(variable_ids))], 
+    station, 
+    names(station_ids)[match(station, unlist(station_ids))]
+  )
 }
 
 # get_wasserportal_stations ----------------------------------------------------
@@ -260,7 +272,7 @@ get_wasserportal_variables <- function(station = NULL)
   types <- names(variables)
   
   if (! is.null(station)) {
-
+    
     types <- types[sapply(types, function(type) {
       
       station %in% get_wasserportal_stations(type)
@@ -288,7 +300,7 @@ repair_wasserportal_timestamps <- function(timestamps, dbg = FALSE)
   timestamps[first_indices] <- gsub(" 03", " 02", timestamps[first_indices])
   
   indices <- sort(unlist(index_pairs))
-
+  
   kwb.utils::printIf(dbg, caption = "After timestamp repair", data.frame(
     row = indices, 
     old = timestamps_old[indices], 

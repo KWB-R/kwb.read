@@ -1,3 +1,20 @@
+# assert_date ------------------------------------------------------------------
+assert_date <- function(x)
+{
+  if (! inherits(x, "Date")) {
+    
+    x <- try(as.Date(x))
+    
+    if (inherits(x, "try-error")) {
+      stop(call. = FALSE, sprintf(
+        "%s cannot be converted to a Date object!", deparse(substitute(x))
+      ))
+    }
+  }
+  
+  x
+}
+
 # remove_empty_columns ---------------------------------------------------------
 remove_empty_columns <- function(x)
 {

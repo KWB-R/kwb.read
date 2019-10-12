@@ -2,6 +2,11 @@ if (FALSE)
 {
   stations <- kwb.read::get_wasserportal_stations(type = "quality")
   
+  df <- kwb.read::read_wasserportal(station = stations[1])
+  df[is.na(df$Sauerstoffsaettigung), ]
+  
+  View(df)
+  
   all_dfs <- lapply(stations, function(station) {
     try(kwb.read::read_wasserportal(station))
   })
@@ -12,15 +17,12 @@ if (FALSE)
   
   dfs <- all_dfs[! failed]
 
-  View(dfs$MPS_Caprivibruecke)
-    
-  lapply(dfs, function(df) table(diff(df$LocalDateTime)))
-  
-  indices <- which(diffs != 15)
-  
-  df[sort(unique(c(indices-1, indices, indices+1))), ]
-  
-  df[is.na(df$Sauerstoffsaettigung), ]
+  lapply(dfs, function(df) {
+    diffs <- diff(df$LocalDateTime)
+    kwb.utils::printIf(TRUE, table(diffs))
+    indices <- which(diffs != 15)
+    df[sort(unique(c(indices - 1, indices, indices + 1))), ]
+  })
   
   data <- dplyr::bind_rows(dfs, .id = "station")
   
