@@ -1,6 +1,6 @@
 # read_wasserportal_raw --------------------------------------------------------
 read_wasserportal_raw <- function(
-  variable, station, from_date, include_raw_time = FALSE
+  variable, station, from_date, include_raw_time = FALSE, handle = NULL
 )
 {
   #variable <- variables[2]
@@ -15,10 +15,17 @@ read_wasserportal_raw <- function(
   stopifnot(variable %in% variable_ids)
   
   # Helper function to read CSV
-  read <- function(text, ...) utils::read.table(
-    text = text, sep = ";", dec = ",", stringsAsFactors = FALSE, ...
-  )
-  
+  read <- function(text, ...) {
+    
+    result <- try(utils::read.table(
+      text = text, sep = ";", dec = ",", stringsAsFactors = FALSE, ...
+    ))
+    
+    if (! inherits(result, "try-error")) {
+      result
+    }
+  }
+
   progress <- get_wasserportal_text(station, variable, station_ids, variable_ids)
   url <- get_wasserportal_url(station, variable)
   
@@ -29,7 +36,15 @@ read_wasserportal_raw <- function(
   body <- list(sreihe = "w", smode = "c", sdatum = sdatum)
   
   # Post the request to the web server
-  response <- kwb.utils::catAndRun(progress, httr::POST(url, body = body))
+  response <- kwb.utils::catAndRun(
+    progress, 
+    httr::POST(url, body = body, handle = handle)
+  )
+  
+  if (httr::http_error(response)) {
+    message("POST request failed. Returning the response object.")
+    return(response)
+  }
   
   # Read the response of the web server as text
   text <- httr::content(response, as = "text", encoding = "Latin1")
@@ -42,6 +57,10 @@ read_wasserportal_raw <- function(
   
   # Read the data rows
   data <- read(text, header = FALSE, skip = 1)
+  
+  if (is.null(data)) {
+    return(NULL)
+  }
   
   # Get the numbers of the data columns 
   first_cols <- seq_len(ncol(data))

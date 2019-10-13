@@ -84,13 +84,29 @@ read_wasserportal <- function(
   
   names(variables) <- names(variable_ids)[match(variables, variable_ids)]
   
+  handle <- httr::handle_find(get_wasserportal_url(0, 0))
+  
   dfs <- lapply(
     X = variables, 
     FUN = read_wasserportal_raw, 
     station = station, 
     from_date = from_date, 
-    include_raw_time = include_raw_time
+    include_raw_time = include_raw_time,
+    handle = handle
   )
+
+  # Remove elements of class "response" that are returned in case of an error
+  failed <- sapply(dfs, inherits, "response")
+
+  if (any(failed)) {
+    kwb.utils::catAndRun(
+      sprintf("Removing %d elements that failed", sum(failed)), 
+      expr = {
+        failures <- dfs[failed]
+        dfs <- dfs[! failed]
+      }
+    )
+  } 
   
   date_vectors <- lapply(dfs, kwb.utils::selectColumns, "LocalDateTime")
   
@@ -133,5 +149,9 @@ read_wasserportal <- function(
   
   metadata <- lapply(dfs, kwb.utils::getAttribute, "metadata")
   
-  structure(result, metadata = metadata)
+  structure(
+    result, 
+    metadata = metadata, 
+    failures = if (any(failed)) failures
+  )
 }
