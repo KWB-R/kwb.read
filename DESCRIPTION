@@ -24,7 +24,7 @@ BugReports: https://github.com/KWB-R/kwb.read/issues
 Imports: 
     httr,
     kwb.base,
-    kwb.datetime@dev,
+    kwb.datetime,
     kwb.db,
     kwb.en13508.2,
     kwb.fakin,
@@ -34,7 +34,7 @@ Suggests:
     covr
 Remotes: 
     github::kwb-r/kwb.base,
-    github::kwb-r/kwb.datetime,
+    github::kwb-r/kwb.datetime@dev,
     github::kwb-r/kwb.db,
     github::kwb-r/kwb.en13508.2,
     github::kwb-r/kwb.fakin,
