@@ -118,7 +118,7 @@
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Get Names and IDs of the Variables of wasserportal.berlin.de</h1>
-    <small class="dont-index">Source: <a href='https://github.com/KWB-R/kwb.read/blob/master/R/read_wasserportal_raw.R'><code>R/read_wasserportal_raw.R</code></a></small>
+    <small class="dont-index">Source: <a href='https://github.com/KWB-R/kwb.read/blob/master/R/get_wasserportal_variables.R'><code>R/get_wasserportal_variables.R</code></a></small>
     <div class="hidden name"><code>get_wasserportal_variables.Rd</code></div>
     </div>
 
@@ -126,14 +126,24 @@
     <p>Get Names and IDs of the Variables of wasserportal.berlin.de</p>
     </div>
 
-    <pre class="usage"><span class='fu'>get_wasserportal_variables</span>()</pre>
+    <pre class="usage"><span class='fu'>get_wasserportal_variables</span>(<span class='kw'>station</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)</pre>
 
+    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
+    <table class="ref-arguments">
+    <colgroup><col class="name" /><col class="desc" /></colgroup>
+    <tr>
+      <th>station</th>
+      <td><p>station id. If given, only variables that are available for 
+the given station are returned.</p></td>
+    </tr>
+    </table>
 
 
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
+      <li><a href="#arguments">Arguments</a></li>
     </ul>
 
   </div>
