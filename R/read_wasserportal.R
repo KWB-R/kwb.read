@@ -96,17 +96,24 @@ read_wasserportal <- function(
   )
 
   # Remove elements of class "response" that are returned in case of an error
-  failed <- sapply(dfs, inherits, "response")
+  failed <- sapply(dfs, function(df) {
+    inherits(df, "response") || length(df) == 0
+  })
 
   if (any(failed)) {
     kwb.utils::catAndRun(
-      sprintf("Removing %d elements that failed", sum(failed)), 
+      sprintf("Removing %d elements that are empty or failed", sum(failed)), 
       expr = {
         failures <- dfs[failed]
         dfs <- dfs[! failed]
       }
     )
   } 
+  
+  if (length(dfs) == 0) {
+    message("No remaining data frames. Returning NULL.")
+    return(NULL)
+  }
   
   date_vectors <- lapply(dfs, kwb.utils::selectColumns, "LocalDateTime")
   

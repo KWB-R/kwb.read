@@ -17,7 +17,7 @@ read_wasserportal_raw <- function(
   # Helper function to read CSV
   read <- function(text, ...) {
     
-    result <- try(utils::read.table(
+    result <- try(silent = TRUE, utils::read.table(
       text = text, sep = ";", dec = ",", stringsAsFactors = FALSE, ...
     ))
     
@@ -49,24 +49,27 @@ read_wasserportal_raw <- function(
   # Read the response of the web server as text
   text <- httr::content(response, as = "text", encoding = "Latin1")
   
-  # Read the header row
-  header_row <- strsplit(substr(text, 1, 1000), "\n")[[1]][1]
-  
+  # Split the text into separate lines
+  textlines <- strsplit(text, "\n")[[1]]
+
   # Split the header row into fields
-  header_fields <- as.character(read(header_row))
+  header_fields <- as.character(read(textlines[1]))
   
+  # Return empty list with metadata if no data rows are available
+  if (length(textlines) == 1) {
+    
+    return(add_wasserportal_metadata(list(), header_fields))
+  }
+
   # Read the data rows
   data <- read(text, header = FALSE, skip = 1)
   
-  if (is.null(data)) {
-    return(NULL)
-  }
-  
   # Get the numbers of the data columns 
+  stopifnot(ncol(data) == 2)
   first_cols <- seq_len(ncol(data))
   
   # Name the data columns as given in the first columns of the header row
-  names(data) <- header_fields[first_cols]
+  names(data) <- header_fields[1:2]
   
   raw_timestamps <- kwb.utils::selectColumns(data, "Datum")
   
@@ -97,7 +100,13 @@ read_wasserportal_raw <- function(
   
   # Return the data frame with the additional fields of the header row as
   # meta information in attribute "metadata"
-  structure(data, metadata = header_fields[- first_cols])
+  add_wasserportal_metadata(data, header_fields)
+}
+
+# add_wasserportal_metadata ----------------------------------------------------
+add_wasserportal_metadata <- function(x, header_fields)
+{
+  structure(x, metadata = header_fields[-(1:2)])
 }
 
 # get_wasserportal_text --------------------------------------------------------

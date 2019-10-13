@@ -5,13 +5,15 @@ if (FALSE)
   stations <- kwb.read::get_wasserportal_stations(type = "flow")
   stations <- kwb.read::get_wasserportal_stations(type = "level")
   
-  kwb.read::read_wasserportal(stations$Weisser_See)
+  kwb.read::read_wasserportal(station = stations$Weisser_See)
   
   all_dfs <- lapply(stations, function(station) {
     try(kwb.read::read_wasserportal(station))
   })
-
   failed <- sapply(all_dfs, inherits, "try-error")
+  
+  all_dfs <- lapply(stations, kwb.read::read_wasserportal)
+  failed <- sapply(all_dfs, is.null)
   
   stopifnot(all(! failed))
   
