@@ -24,7 +24,7 @@ BugReports: https://github.com/KWB-R/kwb.read/issues
 Imports: 
     httr,
     kwb.base,
-    kwb.datetime,
+    kwb.datetime@dev,
     kwb.db,
     kwb.en13508.2,
     kwb.fakin,
