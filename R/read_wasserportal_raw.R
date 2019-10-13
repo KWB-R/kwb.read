@@ -1,141 +1,3 @@
-# read_wasserportal ------------------------------------------------------------
-
-#' Download and Read Data from wasserportal.berlin.de
-#' 
-#' This function downloads and reads CSV files from wasserportal.berlin.de.
-#' 
-#' The original timestamps (column \code{timestamps_raw} in the example below)
-#' are not all plausible, e.g. "31.03.2019 03:00" appears twice! They are
-#' corrected (column \code{timestamp_corr}) to represent a plausible sequence of
-#' timestamps in Berlin Normal Time (UTC+01) Finally, a valid POSIXct timestamp
-#' in timezone "Berlin/Europe" (UTC+01 in winter, UTC+02 in summer) is created,
-#' together with the additional information on the UTC offset (column
-#' \code{UTCOffset}, 1 in winter, 2 in summer).
-#' 
-#' @param station station number, as returned by 
-#'   \code{\link{get_wasserportal_stations}}
-#' @param variables vector of variable identifiers, as returned by 
-#'   \code{\link{get_wasserportal_variables}}
-#' @param from_date \code{Date} object (or string in format "yyyy-mm-dd" that 
-#'   can be converted to a \code{Date} object representing the first day for
-#'   which to request data
-#' @param include_raw_time if \code{TRUE} the original time column and the 
-#'   column with the corrected winter time are included in the output. The
-#'   default is \code{FALSE}.
-#' @return data frame read from the CSV file that the download provides. 
-#'   IMPORTANT: It is not yet clear how to interpret the timestamp, see example
-#' @importFrom httr POST content
-#' @importFrom utils read.table
-#' @export
-#' @examples 
-#' # Get a list of available water quality stations and variables
-#' stations <- kwb.read::get_wasserportal_stations()
-#' variables <- kwb.read::get_wasserportal_variables()
-#' 
-#' # Read the timeseries (multiple variables for one station)
-#' water_quality <- kwb.read::read_wasserportal(
-#'   station = stations$MPS_Charlottenburg,
-#'   variables = c(variables["Sauerstoffgehalt"], variables["Leitfaehigkeit"]),
-#'   from_date = "2019-03-01", include_raw_time = TRUE
-#' )
-#' 
-#' # Look at the first few records
-#' head(water_quality)
-#' 
-#' # Check the metadata
-#' kwb.utils::getAttribute(water_quality, "metadata")
-#' 
-#' # Set missing values to NA
-#' water_quality[water_quality == -777] <- NA
-#' 
-#' # Look at the first few records again
-#' head(water_quality)
-#' 
-#' ### How was the original timestamp interpreted?
-#' 
-#' # Determine the days at which summer time starts and ends, respectively
-#' switches <- kwb.datetime::date_range_CEST(2019)
-#' 
-#' # Reformat to dd.mm.yyyy
-#' switches <- kwb.datetime::reformatTimestamp(switches, "%Y-%m-%d", "%d.%m.%Y")
-#' 
-#' # Define a pattern to look for timestamps "around" the switches
-#' pattern <- paste(switches, "0[1-4]", collapse = "|")
-#' 
-#' # Look at the data for these timestamps
-#' water_quality[grepl(pattern, water_quality$timestamp_raw), ]
-#' 
-#' # The original timestamps (timestamps_raw) are not all plausible, e.g. 
-#' # "31.03.2019 03:00" appears twice! See the Details in ?read_wasserportal()
-#' # how this is treated.
-read_wasserportal <- function(
-  station, variables = get_wasserportal_variables(station), 
-  from_date = "2019-01-01", include_raw_time = FALSE
-)
-{
-  #kwb.utils::assignPackageObjects("kwb.read")
-  #variables = get_wasserportal_variables(station);from_date = "2019-01-01";include_raw_time = FALSE
-  
-  variable_ids <- get_wasserportal_variables()
-  station_ids <- get_wasserportal_stations(type = NULL)
-  
-  stopifnot(all(station %in% station_ids))
-  stopifnot(all(variables %in% variable_ids))
-
-  names(variables) <- names(variable_ids)[match(variables, variable_ids)]
-  
-  dfs <- lapply(
-    X = variables, 
-    FUN = read_wasserportal_raw, 
-    station = station, 
-    from_date = from_date, 
-    include_raw_time = include_raw_time
-  )
-  
-  date_vectors <- lapply(dfs, kwb.utils::selectColumns, "LocalDateTime")
-  
-  if (length(variables) > 1 && ! kwb.utils::allAreIdentical(date_vectors)) {
-    message("Not all requests return the same timestamp column:")
-    kwb.utils::printIf(TRUE, lengths(date_vectors))
-  }
-  
-  keys <- c(
-    if (include_raw_time) c("timestamp_raw", "timestamp_corr"), 
-    "LocalDateTime"
-  )
-  
-  backbones <- lapply(dfs, kwb.utils::selectColumns, keys, drop = FALSE)
-  
-  backbone <- unique(do.call(rbind, backbones))
-  
-  backbone <- backbone[order(backbone$LocalDateTime), , drop = FALSE]
-  
-  backbone$row <- seq_len(nrow(backbone))
-  
-  data_frames <- c(list(base = backbone), dfs)
-  
-  result <- kwb.utils::mergeAll(
-    data_frames, by = keys, all.x = TRUE, dbg = FALSE
-  )
-  
-  result <- kwb.utils::removeColumns(result[order(result$row), ], "row.base")
-  
-  names(result) <- gsub("Einzelwert\\.", "", names(result))
-  
-  utc_offset <- kwb.datetime::utcOffset(
-    LocalDateTime = format(result$LocalDateTime), 
-    DateTimeUTC = format(result$LocalDateTime, tz = "UTC")
-  )
-  
-  result <- kwb.utils::insertColumns(
-    result, after = "LocalDateTime", UTCOffset = utc_offset
-  )
-  
-  metadata <- lapply(dfs, kwb.utils::getAttribute, "metadata")
-
-  return(structure(result, metadata = metadata))
-}
-
 # read_wasserportal_raw --------------------------------------------------------
 read_wasserportal_raw <- function(
   variable, station, from_date, include_raw_time = FALSE
@@ -219,14 +81,6 @@ read_wasserportal_raw <- function(
   structure(data, metadata = header_fields[- first_cols])
 }
 
-# get_wasserportal_url ---------------------------------------------------------
-get_wasserportal_url <- function(station, variable)
-{
-  url_base <- "https://wasserportal.berlin.de/station.php"
-  
-  sprintf("%s?sstation=%s&anzeige=%sd", url_base, station, variable)
-}
-
 # get_wasserportal_text --------------------------------------------------------
 get_wasserportal_text <- function(station, variable, station_ids, variable_ids)
 {
@@ -238,68 +92,12 @@ get_wasserportal_text <- function(station, variable, station_ids, variable_ids)
   )
 }
 
-# get_wasserportal_stations ----------------------------------------------------
-
-#' Get Names and IDs of the Stations of wasserportal.berlin.de
-#' 
-#' @param type one of "quality", "level", "flow"
-#' @export
-get_wasserportal_stations <- function(type = "quality")
+# get_wasserportal_url ---------------------------------------------------------
+get_wasserportal_url <- function(station, variable)
 {
-  if (! is.null(type)) {
-    type <- match.arg(type, c("quality", "level", "flow"))  
-  }
+  url_base <- "https://wasserportal.berlin.de/station.php"
   
-  file <- "stations_wasserportal.csv"
-  
-  stations <- readPackageFile(file, fileEncoding = "UTF-8")
-  
-  get <- kwb.utils::selectColumns
-  
-  stations$id <- as.character(get(stations, "id"))
-  stations$name <- kwb.utils::hsSubstSpecChars(get(stations, "name"))
-  
-  is_available <- if (is.null(type)) {
-    seq_len(nrow(stations))
-  } else {
-    nzchar(get(stations, type))
-  }
-  
-  kwb.utils::toLookupList(data = get(stations, c("name", "id"))[is_available, ])
-}
-
-# get_wasserportal_variables ---------------------------------------------------
-
-#' Get Names and IDs of the Variables of wasserportal.berlin.de
-#' 
-#' @param station station id. If given, only variables that are available for 
-#'   the given station are returned.
-#' @export
-get_wasserportal_variables <- function(station = NULL)
-{
-  variables <- list(
-    quality = c(
-      Wassertemperatur = "t",
-      Leitfaehigkeit = "l",
-      pH_Wert = "p",
-      Sauerstoffgehalt = "o",
-      Sauerstoffsaettigung = "s"
-    ),
-    level = c(Wasserstand = "w"),
-    flow = c(Durchfluss = "d")
-  )
-  
-  types <- names(variables)
-  
-  if (! is.null(station)) {
-    
-    types <- types[sapply(types, function(type) {
-      
-      station %in% get_wasserportal_stations(type)
-    })]
-  }
-  
-  unlist(lapply(types, function(element) variables[[element]]))
+  sprintf("%s?sstation=%s&anzeige=%sd", url_base, station, variable)
 }
 
 # repair_wasserportal_timestamps -----------------------------------------------
