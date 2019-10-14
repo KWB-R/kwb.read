@@ -181,8 +181,8 @@ together with the additional information on the UTC offset (column
   <span class='kw'>station</span> <span class='kw'>=</span> <span class='no'>stations</span>$<span class='no'>MPS_Charlottenburg</span>,
   <span class='kw'>variables</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='no'>variables</span>[<span class='st'>"Sauerstoffgehalt"</span>], <span class='no'>variables</span>[<span class='st'>"Leitfaehigkeit"</span>]),
   <span class='kw'>from_date</span> <span class='kw'>=</span> <span class='st'>"2019-03-01"</span>, <span class='kw'>include_raw_time</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>
-)</div><div class='output co'>#&gt; Reading 'Sauerstoffgehalt' for station 153 (MPS_Charlottenburg) ... ok. (3.00s) 
-#&gt; Reading 'Leitfaehigkeit' for station 153 (MPS_Charlottenburg) ... ok. (1.58s) </div><div class='input'>
+)</div><div class='output co'>#&gt; Reading 'Sauerstoffgehalt' for station 153 (MPS_Charlottenburg) ... ok. (3.03s) 
+#&gt; Reading 'Leitfaehigkeit' for station 153 (MPS_Charlottenburg) ... ok. (1.61s) </div><div class='input'>
 <span class='co'># Look at the first few records</span>
 <span class='fu'><a href='https://rdrr.io/r/utils/head.html'>head</a></span>(<span class='no'>water_quality</span>)</div><div class='output co'>#&gt;      timestamp_raw   timestamp_corr       LocalDateTime UTCOffset
 #&gt; 1 01.03.2019 00:00 01.03.2019 00:00 2019-03-01 00:00:00         1
@@ -240,39 +240,39 @@ together with the additional information on the UTC offset (column
 
 <span class='co'># Look at the data for these timestamps</span>
 <span class='no'>water_quality</span>[<span class='fu'><a href='https://rdrr.io/r/base/grep.html'>grepl</a></span>(<span class='no'>pattern</span>, <span class='no'>water_quality</span>$<span class='no'>timestamp_raw</span>), ]</div><div class='output co'>#&gt;          timestamp_raw   timestamp_corr       LocalDateTime UTCOffset
-#&gt; 21387 31.03.2019 01:00 31.03.2019 01:00 2019-03-31 01:00:00         1
-#&gt; 21388 31.03.2019 01:15 31.03.2019 01:15 2019-03-31 01:15:00         1
-#&gt; 21389 31.03.2019 01:30 31.03.2019 01:30 2019-03-31 01:30:00         1
-#&gt; 21390 31.03.2019 01:45 31.03.2019 01:45 2019-03-31 01:45:00         1
-#&gt; 21391 31.03.2019 03:00 31.03.2019 02:00 2019-03-31 03:00:00         2
-#&gt; 21393 31.03.2019 03:15 31.03.2019 02:15 2019-03-31 03:15:00         2
-#&gt; 21395 31.03.2019 03:30 31.03.2019 02:30 2019-03-31 03:30:00         2
-#&gt; 21397 31.03.2019 03:45 31.03.2019 02:45 2019-03-31 03:45:00         2
-#&gt; 21392 31.03.2019 03:00 31.03.2019 03:00 2019-03-31 04:00:00         2
-#&gt; 21394 31.03.2019 03:15 31.03.2019 03:15 2019-03-31 04:15:00         2
-#&gt; 21396 31.03.2019 03:30 31.03.2019 03:30 2019-03-31 04:30:00         2
-#&gt; 21398 31.03.2019 03:45 31.03.2019 03:45 2019-03-31 04:45:00         2
-#&gt; 21399 31.03.2019 04:00 31.03.2019 04:00 2019-03-31 05:00:00         2
-#&gt; 21400 31.03.2019 04:15 31.03.2019 04:15 2019-03-31 05:15:00         2
-#&gt; 21401 31.03.2019 04:30 31.03.2019 04:30 2019-03-31 05:30:00         2
-#&gt; 21402 31.03.2019 04:45 31.03.2019 04:45 2019-03-31 05:45:00         2
+#&gt; 21470 31.03.2019 01:00 31.03.2019 01:00 2019-03-31 01:00:00         1
+#&gt; 21471 31.03.2019 01:15 31.03.2019 01:15 2019-03-31 01:15:00         1
+#&gt; 21472 31.03.2019 01:30 31.03.2019 01:30 2019-03-31 01:30:00         1
+#&gt; 21473 31.03.2019 01:45 31.03.2019 01:45 2019-03-31 01:45:00         1
+#&gt; 21474 31.03.2019 03:00 31.03.2019 02:00 2019-03-31 03:00:00         2
+#&gt; 21476 31.03.2019 03:15 31.03.2019 02:15 2019-03-31 03:15:00         2
+#&gt; 21478 31.03.2019 03:30 31.03.2019 02:30 2019-03-31 03:30:00         2
+#&gt; 21480 31.03.2019 03:45 31.03.2019 02:45 2019-03-31 03:45:00         2
+#&gt; 21475 31.03.2019 03:00 31.03.2019 03:00 2019-03-31 04:00:00         2
+#&gt; 21477 31.03.2019 03:15 31.03.2019 03:15 2019-03-31 04:15:00         2
+#&gt; 21479 31.03.2019 03:30 31.03.2019 03:30 2019-03-31 04:30:00         2
+#&gt; 21481 31.03.2019 03:45 31.03.2019 03:45 2019-03-31 04:45:00         2
+#&gt; 21482 31.03.2019 04:00 31.03.2019 04:00 2019-03-31 05:00:00         2
+#&gt; 21483 31.03.2019 04:15 31.03.2019 04:15 2019-03-31 05:15:00         2
+#&gt; 21484 31.03.2019 04:30 31.03.2019 04:30 2019-03-31 05:30:00         2
+#&gt; 21485 31.03.2019 04:45 31.03.2019 04:45 2019-03-31 05:45:00         2
 #&gt;       Sauerstoffgehalt Leitfaehigkeit
-#&gt; 21387               NA             NA
-#&gt; 21388               NA             NA
-#&gt; 21389               NA             NA
-#&gt; 21390               NA             NA
-#&gt; 21391               NA             NA
-#&gt; 21393               NA             NA
-#&gt; 21395               NA             NA
-#&gt; 21397               NA             NA
-#&gt; 21392               NA             NA
-#&gt; 21394               NA             NA
-#&gt; 21396               NA             NA
-#&gt; 21398               NA             NA
-#&gt; 21399               NA             NA
-#&gt; 21400               NA             NA
-#&gt; 21401               NA             NA
-#&gt; 21402               NA             NA</div><div class='input'>
+#&gt; 21470               NA             NA
+#&gt; 21471               NA             NA
+#&gt; 21472               NA             NA
+#&gt; 21473               NA             NA
+#&gt; 21474               NA             NA
+#&gt; 21476               NA             NA
+#&gt; 21478               NA             NA
+#&gt; 21480               NA             NA
+#&gt; 21475               NA             NA
+#&gt; 21477               NA             NA
+#&gt; 21479               NA             NA
+#&gt; 21481               NA             NA
+#&gt; 21482               NA             NA
+#&gt; 21483               NA             NA
+#&gt; 21484               NA             NA
+#&gt; 21485               NA             NA</div><div class='input'>
 # The original timestamps (timestamps_raw) are not all plausible, e.g. 
 # "31.03.2019 03:00" appears twice! See the Details in ?read_wasserportal()
 # how this is treated.
