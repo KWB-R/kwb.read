@@ -56,7 +56,7 @@ read_wasserportal_raw <- function(
   header_fields <- as.character(read(textlines[1]))
   
   # Return empty list with metadata if no data rows are available
-  if (length(textlines) == 1) {
+  if (length(textlines) == 1L) {
     
     return(add_wasserportal_metadata(list(), header_fields))
   }
@@ -65,7 +65,7 @@ read_wasserportal_raw <- function(
   data <- read(text, header = FALSE, skip = 1)
   
   # Get the numbers of the data columns 
-  stopifnot(ncol(data) == 2)
+  stopifnot(ncol(data) == 2L)
   first_cols <- seq_len(ncol(data))
   
   # Name the data columns as given in the first columns of the header row
@@ -75,7 +75,9 @@ read_wasserportal_raw <- function(
   
   data <- kwb.utils::renameColumns(data, list(Datum = "timestamp_raw"))
   
-  data$timestamp_corr <- repair_wasserportal_timestamps(raw_timestamps)
+  data$timestamp_corr <- repair_wasserportal_timestamps(
+    timestamps = raw_timestamps
+  )
 
   data <- remove_remaining_duplicates(data)
   
@@ -135,7 +137,11 @@ repair_wasserportal_timestamps <- function(timestamps, dbg = FALSE)
   
   index_pairs <- lapply(duplicates, function(x) which(timestamps == x))
   
-  stopifnot(all(lengths(index_pairs) == 2))
+  if (length(index_pairs) == 0L) {
+    return(timestamps)
+  }
+  
+  stopifnot(all(lengths(index_pairs) == 2L))
   
   first_indices <- sapply(index_pairs, kwb.utils::firstElement)
   

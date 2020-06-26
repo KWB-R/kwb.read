@@ -74,6 +74,7 @@ read_wasserportal <- function(
 )
 {
   #kwb.utils::assignPackageObjects("kwb.read")
+  #station=get_wasserportal_stations(type = "flow")$Tiefwerder
   #variables = get_wasserportal_variables(station);from_date = "2019-01-01";include_raw_time = FALSE
   
   variable_ids <- get_wasserportal_variables()
