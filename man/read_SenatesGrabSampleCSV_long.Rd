@@ -4,8 +4,13 @@
 \alias{read_SenatesGrabSampleCSV_long}
 \title{Read Senates' Grab Sample File}
 \usage{
-read_SenatesGrabSampleCSV_long(csv, sep = kwb.utils::guessSeparator(csv),
-  dateFormat, dec = ifelse(sep == ",", ".", ","), dbg = FALSE)
+read_SenatesGrabSampleCSV_long(
+  csv,
+  sep = kwb.utils::guessSeparator(csv),
+  dateFormat,
+  dec = ifelse(sep == ",", ".", ","),
+  dbg = FALSE
+)
 }
 \arguments{
 \item{csv}{path to CSV file}

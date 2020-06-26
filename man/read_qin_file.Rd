@@ -4,8 +4,7 @@
 \alias{read_qin_file}
 \title{Read "qin"-File}
 \usage{
-read_qin_file(infile, columnWidth = 8, n = -1, headerSize = 528,
-  dbg = TRUE)
+read_qin_file(infile, columnWidth = 8, n = -1, headerSize = 528, dbg = TRUE)
 }
 \arguments{
 \item{infile}{full path to input file.}

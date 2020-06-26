@@ -4,9 +4,12 @@
 \alias{read_wasserportal}
 \title{Download and Read Data from wasserportal.berlin.de}
 \usage{
-read_wasserportal(station,
+read_wasserportal(
+  station,
   variables = get_wasserportal_variables(station),
-  from_date = "2019-01-01", include_raw_time = FALSE)
+  from_date = "2019-01-01",
+  include_raw_time = FALSE
+)
 }
 \arguments{
 \item{station}{station number, as returned by 

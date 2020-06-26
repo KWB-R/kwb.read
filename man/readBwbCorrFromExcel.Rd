@@ -4,8 +4,12 @@
 \alias{readBwbCorrFromExcel}
 \title{Read BWB Rain Correction Data from Excel File}
 \usage{
-readBwbCorrFromExcel(file, tblCorr = "Bericht 1$",
-  tblGaug = "gaugeNames", dbg = TRUE)
+readBwbCorrFromExcel(
+  file,
+  tblCorr = "Bericht 1$",
+  tblGaug = "gaugeNames",
+  dbg = TRUE
+)
 }
 \arguments{
 \item{file}{full path to Excel file}

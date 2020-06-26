@@ -4,9 +4,16 @@
 \alias{readBwbRainData}
 \title{Read BWB Rain Data}
 \usage{
-readBwbRainData(file, tableName = "Niederschlag$", columnNames = NULL,
-  toUTC = TRUE, toNormaltime = FALSE, dbg = TRUE,
-  use2007Driver = kwb.db::isExcel2007File(file), ...)
+readBwbRainData(
+  file,
+  tableName = "Niederschlag$",
+  columnNames = NULL,
+  toUTC = TRUE,
+  toNormaltime = FALSE,
+  dbg = TRUE,
+  use2007Driver = kwb.db::isExcel2007File(file),
+  ...
+)
 }
 \arguments{
 \item{file}{full path to Excel file}

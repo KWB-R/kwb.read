@@ -4,8 +4,11 @@
 \alias{read_BWB_rain_correction_wide_gauge_group}
 \title{Read Correction Data}
 \usage{
-read_BWB_rain_correction_wide_gauge_group(file,
-  encoding = default_encoding(), ...)
+read_BWB_rain_correction_wide_gauge_group(
+  file,
+  encoding = default_encoding(),
+  ...
+)
 }
 \arguments{
 \item{file}{path to rain correction data file}

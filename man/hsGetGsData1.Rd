@@ -4,8 +4,14 @@
 \alias{hsGetGsData1}
 \title{Read SENATE's Grab Sample Data from CSV (type 1)}
 \usage{
-hsGetGsData1(csv, sep = ";", dateFormat = "\%d.\%m.\%Y", dec = ",",
-  data.block.number = NA, dbg = FALSE)
+hsGetGsData1(
+  csv,
+  sep = ";",
+  dateFormat = "\%d.\%m.\%Y",
+  dec = ",",
+  data.block.number = NA,
+  dbg = FALSE
+)
 }
 \arguments{
 \item{csv}{full path to csv file}

@@ -4,8 +4,13 @@
 \alias{read_BWB_rain_correction_wide_gauge}
 \title{Read Corrections in "wide" format}
 \usage{
-read_BWB_rain_correction_wide_gauge(files, sep = ";", country = "de",
-  date.format = c("\%d.\%m.\%Y", "\%A \%d. \%B \%Y")[1], dbg = TRUE)
+read_BWB_rain_correction_wide_gauge(
+  files,
+  sep = ";",
+  country = "de",
+  date.format = c("\%d.\%m.\%Y", "\%A \%d. \%B \%Y")[1],
+  dbg = TRUE
+)
 }
 \arguments{
 \item{files}{paths to rain correction files}

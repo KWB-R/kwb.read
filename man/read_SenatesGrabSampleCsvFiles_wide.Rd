@@ -4,8 +4,14 @@
 \alias{read_SenatesGrabSampleCsvFiles_wide}
 \title{Read Senates' Grab Sample Files}
 \usage{
-read_SenatesGrabSampleCsvFiles_wide(csvs, sep, dateFormat,
-  country = "de", dbg = TRUE, oldversion = FALSE)
+read_SenatesGrabSampleCsvFiles_wide(
+  csvs,
+  sep,
+  dateFormat,
+  country = "de",
+  dbg = TRUE,
+  oldversion = FALSE
+)
 }
 \arguments{
 \item{csvs}{vector of paths to CSV files}

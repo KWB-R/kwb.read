@@ -4,9 +4,14 @@
 \alias{hsGetAllGsData1}
 \title{Get All Grab Sample Data (1)}
 \usage{
-hsGetAllGsData1(csvdir, sep = ";", dateFormat = "\%d.\%m.\%Y",
-  dec = ",", data.block.number = NA, csvFiles = dir(csvdir, "*.csv",
-  full.names = TRUE))
+hsGetAllGsData1(
+  csvdir,
+  sep = ";",
+  dateFormat = "\%d.\%m.\%Y",
+  dec = ",",
+  data.block.number = NA,
+  csvFiles = dir(csvdir, "*.csv", full.names = TRUE)
+)
 }
 \arguments{
 \item{csvdir}{absolute path to directory in which csv files to be read are 
