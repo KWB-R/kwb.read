@@ -4,9 +4,12 @@
 \alias{getGaugeDistances}
 \title{Returns Distances Between Gauges}
 \usage{
-getGaugeDistances(gaugeInfo = getGaugeInfo(), gauges = c("NknI",
-  "NknII", "ChbI", "BlnX", "BlnIX", "Wil", "Wila", "BlnV", "BlnXI", "Lbg",
-  "Hlg", "ZhlIe", "KoepIf", "Kar", "SpaII", "BlnIV"), dbg = FALSE)
+getGaugeDistances(
+  gaugeInfo = getGaugeInfo(),
+  gauges = c("NknI", "NknII", "ChbI", "BlnX", "BlnIX", "Wil", "Wila", "BlnV", "BlnXI",
+    "Lbg", "Hlg", "ZhlIe", "KoepIf", "Kar", "SpaII", "BlnIV"),
+  dbg = FALSE
+)
 }
 \arguments{
 \item{gaugeInfo}{data frame as returned by \code{getGaugeInfo}}

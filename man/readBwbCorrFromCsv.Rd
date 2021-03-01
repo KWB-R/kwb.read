@@ -4,8 +4,7 @@
 \alias{readBwbCorrFromCsv}
 \title{Read BWB Rain Correction Data from CSV File}
 \usage{
-readBwbCorrFromCsv(file, sep = ",", country = "de",
-  format = "\%d.\%m.\%Y")
+readBwbCorrFromCsv(file, sep = ",", country = "de", format = "\%d.\%m.\%Y")
 }
 \arguments{
 \item{file}{path to CSV file}

@@ -4,13 +4,17 @@
 \alias{read_rain}
 \title{Read Rain Data from BWB Excel Files}
 \usage{
-read_rain(directory = kwb.utils::resolve("RAIN_DIR", dictionary),
+read_rain(
+  directory = kwb.utils::resolve("RAIN_DIR", dictionary),
   pattern = kwb.utils::resolve("RAIN_XLS_PATTERN", dictionary),
   tableName = kwb.utils::resolve("RAIN_XLS_TABLE", dictionary),
   dictionary = kwb.utils::selectElements(settings, "dictionary"),
   rain.xls.files = dir(directory, pattern, full.names = TRUE),
   aggregation.interval = kwb.utils::selectElements(settings,
-  "rain.aggregation.interval"), settings = NULL, use2007Driver = TRUE)
+    "rain.aggregation.interval"),
+  settings = NULL,
+  use2007Driver = TRUE
+)
 }
 \arguments{
 \item{directory}{directory containing excel files from which rain data are

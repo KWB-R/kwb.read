@@ -4,9 +4,15 @@
 \alias{read_BWB_rain_correction_long}
 \title{Read BWB Rain Correction Data}
 \usage{
-read_BWB_rain_correction_long(files, sep = ";", country = c("de",
-  "en")[1], date.format = "\%A \%d. \%B \%Y",
-  locale = .localeString(country), wide = TRUE, dbg = TRUE)
+read_BWB_rain_correction_long(
+  files,
+  sep = ";",
+  country = c("de", "en")[1],
+  date.format = "\%A \%d. \%B \%Y",
+  locale = .localeString(country),
+  wide = TRUE,
+  dbg = TRUE
+)
 }
 \arguments{
 \item{files}{full path to CSV file containing rain height correction data in

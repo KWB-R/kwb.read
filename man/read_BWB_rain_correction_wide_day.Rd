@@ -4,9 +4,15 @@
 \alias{read_BWB_rain_correction_wide_day}
 \title{Read Correction "Wide" Format}
 \usage{
-read_BWB_rain_correction_wide_day(files, sep = ";", country = "de",
-  transpose = TRUE, dbg = TRUE, date.format = c("\%d \%B \%Y")[1],
-  encoding = "")
+read_BWB_rain_correction_wide_day(
+  files,
+  sep = ";",
+  country = "de",
+  transpose = TRUE,
+  dbg = TRUE,
+  date.format = c("\%d \%B \%Y")[1],
+  encoding = ""
+)
 }
 \arguments{
 \item{files}{paths to rain correction files}
