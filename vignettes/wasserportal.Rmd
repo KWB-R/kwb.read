@@ -1,0 +1,44 @@
+---
+title: "Wasserportal Berlin"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Wasserportal Berlin}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+```{r setup}
+# install.packages("remotes")
+# remotes::install_github("kwb-r/kwb.read@dev", upgrade = "never", force = TRUE)
+
+# get_new_flow_data ------------------------------------------------------------
+get_new_flow_data <- function(date = Sys.Date() - 1L)
+{
+  data <- kwb.read::read_wasserportal(
+    station = "5803200", # Tiefwerder 
+    variables = "d", # Durchfluss 
+    from_date = date - 1L # Otherwise we start with 01:00 (in summer)
+  )
+  
+  # Filter for date
+  times <- data$LocalDateTime
+  belongs_to_date <- (as.Date(times, tz = attr(times, "tzone")) == date)
+  
+  # Replace values indicating errors
+  flows <- data$Durchfluss
+  flows[flows == -777] <- NA
+  
+  data.frame(
+    date = date, 
+    value = mean(flows[belongs_to_date], na.rm = TRUE)
+  )
+}
+
+```

@@ -31,7 +31,9 @@ Imports:
     kwb.utils,
     xml2
 Suggests: 
-    covr
+    covr,
+    knitr,
+    rmarkdown
 Remotes: 
     github::kwb-r/kwb.base,
     github::kwb-r/kwb.datetime,
@@ -41,3 +43,4 @@ Remotes:
     github::kwb-r/kwb.utils
 Encoding: UTF-8
 RoxygenNote: 7.1.1
+VignetteBuilder: knitr
