@@ -1,5 +1,7 @@
-pandoc: '2.2'
-pkgdown: 1.4.1
+pandoc: 2.7.3
+pkgdown: 1.6.1
 pkgdown_sha: ~
-articles: []
+articles:
+  wasserportal: wasserportal.html
+last_built: 2021-03-01T10:50Z
 
