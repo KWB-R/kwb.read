@@ -42,9 +42,5 @@ Remotes:
     github::kwb-r/kwb.fakin,
     github::kwb-r/kwb.utils
 Encoding: UTF-8
-<<<<<<< HEAD
-RoxygenNote: 7.1.0
-=======
 RoxygenNote: 7.1.1
 VignetteBuilder: knitr
->>>>>>> 8d826209df08a623683371b5ef4d938f27e9817d
