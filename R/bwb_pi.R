@@ -111,5 +111,5 @@ get_PI_data_Halensee <- function(xls.file, sheetName = "mydata")
 #' 
 readPackageFile <- function(file, ...)
 {
-  kwb.utils::readPackageFile(file, package = "kwb.read", sep = ";", ...)
+  kwb.utils::readPackageFile(file, package = "kwb.read", ...)
 }
