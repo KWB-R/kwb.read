@@ -206,19 +206,58 @@ together with the additional information on the UTC offset (column
 #&gt; <span class='warning'>Please use substSpecialChars() instead.</span></div><div class='output co'>#&gt; <span class='warning'>Warning: The function hsSubstSpecChars() is deprecated.</span>
 #&gt; <span class='warning'>Please use substSpecialChars() instead.</span></div><div class='output co'>#&gt; <span class='warning'>Warning: The function hsSubstSpecChars() is deprecated.</span>
 #&gt; <span class='warning'>Please use substSpecialChars() instead.</span></div><div class='output co'>#&gt; <span class='warning'>Warning: The function hsSubstSpecChars() is deprecated.</span>
-#&gt; <span class='warning'>Please use substSpecialChars() instead.</span></div><div class='output co'>#&gt; Reading 'Sauerstoffgehalt' for station 153 (MPS_Charlottenburg) ... ok. (0.59s) </div><div class='output co'>#&gt; <span class='error'>Error in timestamps[first_indices]: invalid subscript type 'list'</span></div><div class='input'>
+#&gt; <span class='warning'>Please use substSpecialChars() instead.</span></div><div class='output co'>#&gt; Reading 'Sauerstoffgehalt' for station 153 (MPS_Charlottenburg) ... ok. (1.88s) </div><div class='output co'>#&gt; <span class='warning'>Warning: The function hsSubstSpecChars() is deprecated.</span>
+#&gt; <span class='warning'>Please use substSpecialChars() instead.</span></div><div class='output co'>#&gt; <span class='warning'>Warning: The function hsSubstSpecChars() is deprecated.</span>
+#&gt; <span class='warning'>Please use substSpecialChars() instead.</span></div><div class='output co'>#&gt; <span class='warning'>Warning: The function hsSubstSpecChars() is deprecated.</span>
+#&gt; <span class='warning'>Please use substSpecialChars() instead.</span></div><div class='output co'>#&gt; <span class='warning'>Warning: The function hsSubstSpecChars() is deprecated.</span>
+#&gt; <span class='warning'>Please use substSpecialChars() instead.</span></div><div class='output co'>#&gt; Reading 'Leitfaehigkeit' for station 153 (MPS_Charlottenburg) ... ok. (0.41s) </div><div class='input'>
 <span class='co'># Look at the first few records</span>
 <span class='fu'><a href='https://rdrr.io/r/utils/head.html'>head</a></span><span class='op'>(</span><span class='va'>water_quality</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span class='error'>Error in head(water_quality): object 'water_quality' not found</span></div><div class='input'>
+</div><div class='output co'>#&gt;      timestamp_raw   timestamp_corr       LocalDateTime UTCOffset
+#&gt; 2 29.02.2020 03:00 29.02.2020 03:00 2020-02-29 03:00:00         1
+#&gt; 3 29.02.2020 03:15 29.02.2020 03:15 2020-02-29 03:15:00         1
+#&gt; 4 29.02.2020 03:30 29.02.2020 03:30 2020-02-29 03:30:00         1
+#&gt; 5 29.02.2020 03:45 29.02.2020 03:45 2020-02-29 03:45:00         1
+#&gt; 6 29.02.2020 04:00 29.02.2020 04:00 2020-02-29 04:00:00         1
+#&gt; 7 29.02.2020 04:15 29.02.2020 04:15 2020-02-29 04:15:00         1
+#&gt;   Sauerstoffgehalt Leitfaehigkeit
+#&gt; 2             -777           -777
+#&gt; 3             -777           -777
+#&gt; 4             -777           -777
+#&gt; 5             -777           -777
+#&gt; 6             -777           -777
+#&gt; 7             -777           -777</div><div class='input'>
 <span class='co'># Check the metadata</span>
 <span class='fu'>kwb.utils</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/pkg/kwb.utils/man/getAttribute.html'>getAttribute</a></span><span class='op'>(</span><span class='va'>water_quality</span>, <span class='st'>"metadata"</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span class='error'>Error in kwb.utils::getAttribute(water_quality, "metadata"): object 'water_quality' not found</span></div><div class='input'>
+</div><div class='output co'>#&gt; $Sauerstoffgehalt
+#&gt; [1] "Stationsnummer: 153"              "Stationsname: MPS Charlottenburg"
+#&gt; [3] "Gewässer: Spree"                  "Sauerstoffgehalt im mg/l"        
+#&gt; [5] "Fehlwerte: -777"                 
+#&gt; 
+#&gt; $Leitfaehigkeit
+#&gt; [1] "Stationsnummer: 153"              "Stationsname: MPS Charlottenburg"
+#&gt; [3] "Gewässer: Spree"                  "Leitfähigkeit in µS/cm"          
+#&gt; [5] "Fehlwerte: -777"                 
+#&gt; </div><div class='input'>
 <span class='co'># Set missing values to NA</span>
 <span class='va'>water_quality</span><span class='op'>[</span><span class='va'>water_quality</span> <span class='op'>==</span> <span class='op'>-</span><span class='fl'>777</span><span class='op'>]</span> <span class='op'>&lt;-</span> <span class='cn'>NA</span>
-</div><div class='output co'>#&gt; <span class='error'>Error in water_quality[water_quality == -777] &lt;- NA: object 'water_quality' not found</span></div><div class='input'>
+
 <span class='co'># Look at the first few records again</span>
 <span class='fu'><a href='https://rdrr.io/r/utils/head.html'>head</a></span><span class='op'>(</span><span class='va'>water_quality</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span class='error'>Error in head(water_quality): object 'water_quality' not found</span></div><div class='input'>
+</div><div class='output co'>#&gt;      timestamp_raw   timestamp_corr       LocalDateTime UTCOffset
+#&gt; 2 29.02.2020 03:00 29.02.2020 03:00 2020-02-29 03:00:00         1
+#&gt; 3 29.02.2020 03:15 29.02.2020 03:15 2020-02-29 03:15:00         1
+#&gt; 4 29.02.2020 03:30 29.02.2020 03:30 2020-02-29 03:30:00         1
+#&gt; 5 29.02.2020 03:45 29.02.2020 03:45 2020-02-29 03:45:00         1
+#&gt; 6 29.02.2020 04:00 29.02.2020 04:00 2020-02-29 04:00:00         1
+#&gt; 7 29.02.2020 04:15 29.02.2020 04:15 2020-02-29 04:15:00         1
+#&gt;   Sauerstoffgehalt Leitfaehigkeit
+#&gt; 2               NA             NA
+#&gt; 3               NA             NA
+#&gt; 4               NA             NA
+#&gt; 5               NA             NA
+#&gt; 6               NA             NA
+#&gt; 7               NA             NA</div><div class='input'>
 <span class='co'>### How was the original timestamp interpreted?</span>
 
 <span class='co'># Determine the days at which summer time starts and ends, respectively</span>
@@ -232,7 +271,9 @@ together with the additional information on the UTC offset (column
 
 <span class='co'># Look at the data for these timestamps</span>
 <span class='va'>water_quality</span><span class='op'>[</span><span class='fu'><a href='https://rdrr.io/r/base/grep.html'>grepl</a></span><span class='op'>(</span><span class='va'>pattern</span>, <span class='va'>water_quality</span><span class='op'>$</span><span class='va'>timestamp_raw</span><span class='op'>)</span>, <span class='op'>]</span>
-</div><div class='output co'>#&gt; <span class='error'>Error in eval(expr, envir, enclos): object 'water_quality' not found</span></div><div class='input'>
+</div><div class='output co'>#&gt; [1] timestamp_raw    timestamp_corr   LocalDateTime    UTCOffset       
+#&gt; [5] Sauerstoffgehalt Leitfaehigkeit  
+#&gt; &lt;0 rows&gt; (or 0-length row.names)</div><div class='input'>
 <span class='co'># The original timestamps (timestamps_raw) are not all plausible, e.g. </span>
 <span class='co'># "31.03.2019 03:00" appears twice! See the Details in ?read_wasserportal()</span>
 <span class='co'># how this is treated.</span>
