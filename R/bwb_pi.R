@@ -25,7 +25,7 @@ getPiColumnRenames <- function(mdb = mdb_rain_meta())
   
   kwb.utils::toLookupList(
     keys = gsub("\\.C1$", "", kwb.utils::selectColumns(info, "PI_Nr")),
-    values = kwb.utils::hsSubstSpecChars(kwb.utils::multiSubstitute(
+    values = kwb.utils::substSpecialChars(kwb.utils::multiSubstitute(
       kwb.utils::selectColumns(info, "Beschreibung"),
       replacements = list("^\\d\\d\\.\\d\\d\\s+|\\s+- Regen pro Tag" = "")
     ))
