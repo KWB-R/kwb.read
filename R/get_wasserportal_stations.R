@@ -17,7 +17,7 @@ get_wasserportal_stations <- function(type = "quality")
   get <- kwb.utils::selectColumns
   
   stations$id <- as.character(get(stations, "id"))
-  stations$name <- kwb.utils::hsSubstSpecChars(get(stations, "name"))
+  stations$name <- kwb.utils::substSpecialChars(get(stations, "name"))
   
   is_available <- if (is.null(type)) {
     seq_len(nrow(stations))
