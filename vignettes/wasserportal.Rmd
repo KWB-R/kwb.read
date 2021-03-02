@@ -22,8 +22,8 @@ knitr::opts_chunk$set(
 get_new_flow_data <- function(date = Sys.Date() - 1L)
 {
   data <- kwb.read::read_wasserportal(
-    station = "5803200", # Tiefwerder 
-    variables = "d", # Durchfluss 
+    station = "149", # Tiefwerder 
+    variables = "quality", # Durchfluss 
     from_date = date - 1L # Otherwise we start with 01:00 (in summer)
   )
   

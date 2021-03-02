@@ -29,6 +29,8 @@ Imports:
     kwb.en13508.2,
     kwb.fakin,
     kwb.utils,
+    magrittr,
+    rvest,
     xml2
 Suggests: 
     covr,
