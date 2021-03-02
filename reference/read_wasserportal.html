@@ -144,7 +144,8 @@
     <pre class="usage"><span class='fu'>read_wasserportal</span><span class='op'>(</span>
   <span class='va'>station</span>,
   variables <span class='op'>=</span> <span class='fu'><a href='get_wasserportal_variables.html'>get_wasserportal_variables</a></span><span class='op'>(</span><span class='va'>station</span><span class='op'>)</span>,
-  from_date <span class='op'>=</span> <span class='st'>"2019-01-01"</span>,
+  from_date <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/character.html'>as.character</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/Sys.time.html'>Sys.Date</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'>-</span> <span class='fl'>90L</span><span class='op'>)</span>,
+  type <span class='op'>=</span> <span class='st'>"single"</span>,
   include_raw_time <span class='op'>=</span> <span class='cn'>FALSE</span>
 <span class='op'>)</span></pre>
 
@@ -165,7 +166,11 @@
       <th>from_date</th>
       <td><p><code>Date</code> object (or string in format "yyyy-mm-dd" that 
 can be converted to a <code>Date</code> object representing the first day for
-which to request data</p></td>
+which to request data. Default: <code><a href='https://rdrr.io/r/base/character.html'>as.character(Sys.Date() - 90L)</a></code></p></td>
+    </tr>
+    <tr>
+      <th>type</th>
+      <td><p>one of "single" (the default), "daily", "monthly"</p></td>
     </tr>
     <tr>
       <th>include_raw_time</th>
@@ -198,23 +203,57 @@ together with the additional information on the UTC offset (column
 <span class='va'>water_quality</span> <span class='op'>&lt;-</span> <span class='fu'>kwb.read</span><span class='fu'>::</span><span class='fu'>read_wasserportal</span><span class='op'>(</span>
   station <span class='op'>=</span> <span class='va'>stations</span><span class='op'>$</span><span class='va'>MPS_Charlottenburg</span>,
   variables <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='va'>variables</span><span class='op'>[</span><span class='st'>"Sauerstoffgehalt"</span><span class='op'>]</span>, <span class='va'>variables</span><span class='op'>[</span><span class='st'>"Leitfaehigkeit"</span><span class='op'>]</span><span class='op'>)</span>,
-  from_date <span class='op'>=</span> <span class='st'>"2019-03-01"</span>, include_raw_time <span class='op'>=</span> <span class='cn'>TRUE</span>
+  from_date <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/character.html'>as.character</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/Sys.time.html'>Sys.Date</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'>-</span> <span class='fl'>30L</span><span class='op'>)</span>, include_raw_time <span class='op'>=</span> <span class='cn'>TRUE</span>
 <span class='op'>)</span>
-</div><div class='output co'>#&gt; Reading 'Sauerstoffgehalt' for station 153 (MPS_Charlottenburg) ... ok. (0.74s) 
-#&gt; Reading 'Leitfaehigkeit' for station 153 (MPS_Charlottenburg) ... ok. (0.46s) 
-#&gt; Removing 2 elements that are empty or failed ... ok. (0.00s) </div><div class='output co'>#&gt; <span class='message'>No remaining data frames. Returning NULL.</span></div><div class='input'>
+</div><div class='output co'>#&gt; Reading 'Sauerstoffgehalt' for station 153 (MPS_Charlottenburg) ... ok. (0.90s) 
+#&gt; Reading 'Leitfaehigkeit' for station 153 (MPS_Charlottenburg) ... ok. (1.46s) </div><div class='input'>
 <span class='co'># Look at the first few records</span>
 <span class='fu'><a href='https://rdrr.io/r/utils/head.html'>head</a></span><span class='op'>(</span><span class='va'>water_quality</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; NULL</div><div class='input'>
+</div><div class='output co'>#&gt;         timestamp_raw   timestamp_corr       LocalDateTime UTCOffset
+#&gt; 2789 31.01.2021 00:00 31.01.2021 00:00 2021-01-31 00:00:00         1
+#&gt; 2790 31.01.2021 00:15 31.01.2021 00:15 2021-01-31 00:15:00         1
+#&gt; 2791 31.01.2021 00:30 31.01.2021 00:30 2021-01-31 00:30:00         1
+#&gt; 2792 31.01.2021 00:45 31.01.2021 00:45 2021-01-31 00:45:00         1
+#&gt; 2793 31.01.2021 01:00 31.01.2021 01:00 2021-01-31 01:00:00         1
+#&gt; 2794 31.01.2021 01:15 31.01.2021 01:15 2021-01-31 01:15:00         1
+#&gt;      Sauerstoffgehalt Leitfaehigkeit
+#&gt; 2789             -777           -777
+#&gt; 2790             -777           -777
+#&gt; 2791             -777           -777
+#&gt; 2792             -777           -777
+#&gt; 2793             -777           -777
+#&gt; 2794             -777           -777</div><div class='input'>
 <span class='co'># Check the metadata</span>
 <span class='fu'>kwb.utils</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/pkg/kwb.utils/man/getAttribute.html'>getAttribute</a></span><span class='op'>(</span><span class='va'>water_quality</span>, <span class='st'>"metadata"</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span class='error'>Error: No such attribute: 'metadata' in water_quality. Available attributes: </span></div><div class='input'>
+</div><div class='output co'>#&gt; $Sauerstoffgehalt
+#&gt; [1] "Stationsnummer: 153"              "Stationsname: MPS Charlottenburg"
+#&gt; [3] "Gewässer: Spree"                  "Sauerstoffgehalt im mg/l"        
+#&gt; [5] "Fehlwerte: -777"                 
+#&gt; 
+#&gt; $Leitfaehigkeit
+#&gt; [1] "Stationsnummer: 153"              "Stationsname: MPS Charlottenburg"
+#&gt; [3] "Gewässer: Spree"                  "Leitfähigkeit in µS/cm"          
+#&gt; [5] "Fehlwerte: -777"                 
+#&gt; </div><div class='input'>
 <span class='co'># Set missing values to NA</span>
 <span class='va'>water_quality</span><span class='op'>[</span><span class='va'>water_quality</span> <span class='op'>==</span> <span class='op'>-</span><span class='fl'>777</span><span class='op'>]</span> <span class='op'>&lt;-</span> <span class='cn'>NA</span>
 
 <span class='co'># Look at the first few records again</span>
 <span class='fu'><a href='https://rdrr.io/r/utils/head.html'>head</a></span><span class='op'>(</span><span class='va'>water_quality</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; logical(0)</div><div class='input'>
+</div><div class='output co'>#&gt;         timestamp_raw   timestamp_corr       LocalDateTime UTCOffset
+#&gt; 2789 31.01.2021 00:00 31.01.2021 00:00 2021-01-31 00:00:00         1
+#&gt; 2790 31.01.2021 00:15 31.01.2021 00:15 2021-01-31 00:15:00         1
+#&gt; 2791 31.01.2021 00:30 31.01.2021 00:30 2021-01-31 00:30:00         1
+#&gt; 2792 31.01.2021 00:45 31.01.2021 00:45 2021-01-31 00:45:00         1
+#&gt; 2793 31.01.2021 01:00 31.01.2021 01:00 2021-01-31 01:00:00         1
+#&gt; 2794 31.01.2021 01:15 31.01.2021 01:15 2021-01-31 01:15:00         1
+#&gt;      Sauerstoffgehalt Leitfaehigkeit
+#&gt; 2789               NA             NA
+#&gt; 2790               NA             NA
+#&gt; 2791               NA             NA
+#&gt; 2792               NA             NA
+#&gt; 2793               NA             NA
+#&gt; 2794               NA             NA</div><div class='input'>
 <span class='co'>### How was the original timestamp interpreted?</span>
 
 <span class='co'># Determine the days at which summer time starts and ends, respectively</span>
@@ -228,7 +267,9 @@ together with the additional information on the UTC offset (column
 
 <span class='co'># Look at the data for these timestamps</span>
 <span class='va'>water_quality</span><span class='op'>[</span><span class='fu'><a href='https://rdrr.io/r/base/grep.html'>grepl</a></span><span class='op'>(</span><span class='va'>pattern</span>, <span class='va'>water_quality</span><span class='op'>$</span><span class='va'>timestamp_raw</span><span class='op'>)</span>, <span class='op'>]</span>
-</div><div class='output co'>#&gt; <span class='error'>Error in water_quality$timestamp_raw: $ operator is invalid for atomic vectors</span></div><div class='input'>
+</div><div class='output co'>#&gt; [1] timestamp_raw    timestamp_corr   LocalDateTime    UTCOffset       
+#&gt; [5] Sauerstoffgehalt Leitfaehigkeit  
+#&gt; &lt;0 rows&gt; (or 0-length row.names)</div><div class='input'>
 <span class='co'># The original timestamps (timestamps_raw) are not all plausible, e.g. </span>
 <span class='co'># "31.03.2019 03:00" appears twice! See the Details in ?read_wasserportal()</span>
 <span class='co'># how this is treated.</span>
