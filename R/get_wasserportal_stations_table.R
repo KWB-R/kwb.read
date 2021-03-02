@@ -31,8 +31,10 @@ get_overview_options <- function ()  {
 #' "https://wasserportal.berlin.de")
 #' @return data frame with metadata for 
 #' @export
-#' @importFrom xml2 read_html
+#' @importFrom kwb.utils substSpecialChars
 #' @importFrom rvest html_node html_table
+#' @importFrom stringr str_remove_all
+#' @importFrom xml2 read_html
 #' @examples
 #' types <- kwb.read::get_overview_options()
 #' str(types)
@@ -59,9 +61,15 @@ overview_url <- sprintf("%s/messwerte.php?anzeige=tabelle&thema=%s",
 
 html_overview <- xml2::read_html(overview_url)  
   
-  html_overview %>%
+overview_table <-  html_overview %>%
   rvest::html_node(xpath = '//*[@id="pegeltab"]') %>% 
   rvest::html_table()
+
+names(overview_table) <- stringr::str_remove_all(names(overview_table), 
+                                                 "-") %>% 
+  kwb.utils::substSpecialChars()
+
+
 
 }
 
