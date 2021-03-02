@@ -1,9 +1,11 @@
 # read_wasserportal_raw --------------------------------------------------------
+# @param type one of "single", "daily", "monthly"
 read_wasserportal_raw <- function(
-  variable, station, from_date, include_raw_time = FALSE, handle = NULL
+  variable, station, from_date, type = "single", include_raw_time = FALSE, 
+  handle = NULL
 )
 {
-  #variable <- variables[2]
+  #variable <- variables[1]
   from_date <- assert_date(from_date)
   
   stopifnot(length(station) == 1)
@@ -13,6 +15,10 @@ read_wasserportal_raw <- function(
   stopifnot(length(variable) == 1)
   variable_ids <- get_wasserportal_variables(station)
   stopifnot(variable %in% variable_ids)
+  
+  sreihe <- kwb.utils::selectElements(elements = type, list(
+    single = "w", daily = "m", monthly = "j"
+  ))
   
   # Helper function to read CSV
   read <- function(text, ...) {
@@ -33,7 +39,7 @@ read_wasserportal_raw <- function(
   sdatum <- format(from_date, format = "%d.%m.%Y")
   
   # Compose the body of the request
-  body <- list(sreihe = "w", smode = "c", sdatum = sdatum)
+  body <- list(sreihe = sreihe, smode = "c", sdatum = sdatum)
   
   # Post the request to the web server
   response <- kwb.utils::catAndRun(
@@ -57,7 +63,6 @@ read_wasserportal_raw <- function(
   
   # Return empty list with metadata if no data rows are available
   if (length(textlines) == 1L) {
-    
     return(add_wasserportal_metadata(list(), header_fields))
   }
 
@@ -65,12 +70,25 @@ read_wasserportal_raw <- function(
   data <- read(text, header = FALSE, skip = 1)
   
   # Get the numbers of the data columns 
-  stopifnot(ncol(data) == 2L)
-  first_cols <- seq_len(ncol(data))
+  if (type != "monthly") {
+    stopifnot(ncol(data) == 2L)
+  }
   
   # Name the data columns as given in the first columns of the header row
-  names(data) <- header_fields[1:2]
+  names(data) <- header_fields[seq_len(ncol(data))]
+
+  if (type == "single") {
+    data <- clean_timestamp_columns(data, include_raw_time)
+  }  
   
+  # Return the data frame with the additional fields of the header row as
+  # meta information in attribute "metadata"
+  add_wasserportal_metadata(data, header_fields)
+}
+
+# clean_timestamp_columns ------------------------------------------------------
+clean_timestamp_columns <- function(data, include_raw_time)
+{
   raw_timestamps <- kwb.utils::selectColumns(data, "Datum")
   
   data <- kwb.utils::renameColumns(data, list(Datum = "timestamp_raw"))
@@ -78,7 +96,7 @@ read_wasserportal_raw <- function(
   data$timestamp_corr <- repair_wasserportal_timestamps(
     timestamps = raw_timestamps
   )
-
+  
   data <- remove_remaining_duplicates(data)
   
   data$LocalDateTime <- kwb.datetime::textToEuropeBerlinPosix(
@@ -87,22 +105,18 @@ read_wasserportal_raw <- function(
     switches = FALSE, 
     dbg = FALSE
   )
-
-  stopifnot(! any(duplicated(data$LocalDateTime)))
   
+  stopifnot(! any(duplicated(data$LocalDateTime)))
+
   keys <- c("timestamp_raw", "timestamp_corr", "LocalDateTime")
   
   data <- kwb.utils::moveColumnsToFront(data, keys)
-
+  
   if (! include_raw_time) {
     data <- kwb.utils::removeColumns(data, keys[1:2])
   }
   
-  data <- remove_timestep_outliers(data, data$LocalDateTime, 60 * 15)
-  
-  # Return the data frame with the additional fields of the header row as
-  # meta information in attribute "metadata"
-  add_wasserportal_metadata(data, header_fields)
+  remove_timestep_outliers(data, data$LocalDateTime, 60 * 15)
 }
 
 # add_wasserportal_metadata ----------------------------------------------------

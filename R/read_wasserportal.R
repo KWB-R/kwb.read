@@ -18,7 +18,8 @@
 #'   \code{\link{get_wasserportal_variables}}
 #' @param from_date \code{Date} object (or string in format "yyyy-mm-dd" that 
 #'   can be converted to a \code{Date} object representing the first day for
-#'   which to request data
+#'   which to request data. Default: \code{as.character(Sys.Date() - 90L)}
+#' @param type one of "single" (the default), "daily", "monthly"
 #' @param include_raw_time if \code{TRUE} the original time column and the 
 #'   column with the corrected winter time are included in the output. The
 #'   default is \code{FALSE}.
@@ -93,15 +94,16 @@ read_wasserportal <- function(
     FUN = read_wasserportal_raw, 
     station = station, 
     from_date = from_date, 
+    type = type,
     include_raw_time = include_raw_time,
     handle = handle
   )
-
+  
   # Remove elements of class "response" that are returned in case of an error
   failed <- sapply(dfs, function(df) {
     inherits(df, "response") || length(df) == 0
   })
-
+  
   if (any(failed)) {
     kwb.utils::catAndRun(
       sprintf("Removing %d elements that are empty or failed", sum(failed)), 
@@ -117,6 +119,35 @@ read_wasserportal <- function(
     return(NULL)
   }
   
+  result <- if (type == "single") {
+    
+    merge_raw_results_single(dfs, variables, include_raw_time)
+      
+  } else if (type == "daily") {
+
+    merge_raw_results_daily(dfs)
+    
+  } else if (type == "monthly") {
+    
+    merge_raw_results_monthly(dfs)
+    
+  } else {
+    
+    stop("type must be one of 'single', 'daily', 'monthly'")
+  }
+  
+  metadata <- lapply(dfs, kwb.utils::getAttribute, "metadata")
+  
+  structure(
+    result, 
+    metadata = metadata, 
+    failures = if (any(failed)) failures
+  )
+}
+
+# merge_raw_results_single -----------------------------------------------------
+merge_raw_results_single <- function(dfs, variables, include_raw_time)
+{
   date_vectors <- lapply(dfs, kwb.utils::selectColumns, "LocalDateTime")
   
   if (length(variables) > 1 && ! kwb.utils::allAreIdentical(date_vectors)) {
@@ -152,15 +183,27 @@ read_wasserportal <- function(
     DateTimeUTC = format(result$LocalDateTime, tz = "UTC")
   )
   
-  result <- kwb.utils::insertColumns(
+  kwb.utils::insertColumns(
     result, after = "LocalDateTime", UTCOffset = utc_offset
   )
-  
-  metadata <- lapply(dfs, kwb.utils::getAttribute, "metadata")
-  
-  structure(
-    result, 
-    metadata = metadata, 
-    failures = if (any(failed)) failures
-  )
+}
+
+# merge_raw_results_daily ------------------------------------------------------
+merge_raw_results_daily <- function(dfs)
+{
+  warning_not_implemented("merge_raw_results_daily()")
+  dfs
+}
+
+# merge_raw_results_monthly ----------------------------------------------------
+merge_raw_results_monthly <- function(dfs)
+{
+  warning_not_implemented("merge_raw_results_monthly()")
+  dfs
+}
+
+# warning_not_implemented ------------------------------------------------------
+warning_not_implemented <- function(x)
+{
+  warning(x, " is not yet implemented. Returning raw data")
 }
