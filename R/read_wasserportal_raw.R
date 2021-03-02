@@ -125,7 +125,7 @@ get_wasserportal_text <- function(station, variable, station_ids, variable_ids)
 # get_wasserportal_url ---------------------------------------------------------
 get_wasserportal_url <- function(station, variable)
 {
-  url_base <- "https://wasserportal.berlin.de/station.php"
+  url_base <- sprintf("%s/station.php", wasserportal_base_url())
   
   sprintf("%s?sstation=%s&anzeige=%sd", url_base, station, variable)
 }

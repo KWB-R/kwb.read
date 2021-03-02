@@ -28,11 +28,13 @@ get_overview_options <- function ()  {
 #' @param type type of stations table to retrieve. Valid options defined in 
 #' get_overview_options(), default: get_overview_options()$groundwater$level 
 #' @param url_wasserportal base url to Wasserportal berlin (default: 
-#' "https://wasserportal.berlin.de")
+#' wasserportal_base_url())
 #' @return data frame with metadata for 
 #' @export
-#' @importFrom xml2 read_html
+#' @importFrom kwb.utils substSpecialChars
 #' @importFrom rvest html_node html_table
+#' @importFrom stringr str_remove_all
+#' @importFrom xml2 read_html
 #' @examples
 #' types <- kwb.read::get_overview_options()
 #' str(types)
@@ -41,7 +43,7 @@ get_overview_options <- function ()  {
 
 get_wasserportal_stations_table <- function (
   type = get_overview_options()$groundwater$level,
-  url_wasserportal = "https://wasserportal.berlin.de"
+  url_wasserportal = wasserportal_base_url()
 ) {
   
   
@@ -59,9 +61,15 @@ overview_url <- sprintf("%s/messwerte.php?anzeige=tabelle&thema=%s",
 
 html_overview <- xml2::read_html(overview_url)  
   
-  html_overview %>%
+overview_table <-  html_overview %>%
   rvest::html_node(xpath = '//*[@id="pegeltab"]') %>% 
   rvest::html_table()
+
+names(overview_table) <- stringr::str_remove_all(names(overview_table), 
+                                                 "-") %>% 
+  kwb.utils::substSpecialChars()
+
+overview_table
 
 }
 

@@ -6,7 +6,7 @@
 \usage{
 get_wasserportal_stations_table(
   type = get_overview_options()$groundwater$level,
-  url_wasserportal = "https://wasserportal.berlin.de"
+  url_wasserportal = wasserportal_base_url()
 )
 }
 \arguments{
@@ -14,7 +14,7 @@ get_wasserportal_stations_table(
 get_overview_options(), default: get_overview_options()$groundwater$level}
 
 \item{url_wasserportal}{base url to Wasserportal berlin (default: 
-"https://wasserportal.berlin.de")}
+wasserportal_base_url())}
 }
 \value{
 data frame with metadata for

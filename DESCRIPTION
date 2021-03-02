@@ -22,6 +22,7 @@ License: MIT + file LICENSE
 URL: https://github.com/KWB-R/kwb.read
 BugReports: https://github.com/KWB-R/kwb.read/issues
 Imports: 
+    dplyr,
     httr,
     kwb.base,
     kwb.datetime,
@@ -30,7 +31,10 @@ Imports:
     kwb.fakin,
     kwb.utils,
     magrittr,
+    rlang,
     rvest,
+    stringr,
+    tidyr,
     xml2
 Suggests: 
     covr,
