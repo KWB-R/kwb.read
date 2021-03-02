@@ -50,18 +50,21 @@ together with the additional information on the UTC offset (column
 stations <- kwb.read::get_wasserportal_stations()
 variables <- kwb.read::get_wasserportal_variables()
 
+# Set the start date
+from_date <- "2020-03-01"
+
 # Read the timeseries (multiple variables for one station)
 water_quality <- kwb.read::read_wasserportal(
   station = stations$MPS_Charlottenburg,
   variables = c(variables["Sauerstoffgehalt"], variables["Leitfaehigkeit"]),
-  from_date = as.character(Sys.Date() - 30L), include_raw_time = TRUE
+  from_date = from_date, include_raw_time = TRUE
 )
 
 # Look at the first few records
 head(water_quality)
 
 # Check the metadata
-kwb.utils::getAttribute(water_quality, "metadata")
+#kwb.utils::getAttribute(water_quality, "metadata")
 
 # Set missing values to NA
 water_quality[water_quality == -777] <- NA
@@ -72,7 +75,8 @@ head(water_quality)
 ### How was the original timestamp interpreted?
 
 # Determine the days at which summer time starts and ends, respectively
-switches <- kwb.datetime::date_range_CEST(2019)
+from_year <- as.integer(substr(from_date, 1L, 4L))
+switches <- kwb.datetime::date_range_CEST(from_year)
 
 # Reformat to dd.mm.yyyy
 switches <- kwb.datetime::reformatTimestamp(switches, "\%Y-\%m-\%d", "\%d.\%m.\%Y")
@@ -83,7 +87,8 @@ pattern <- paste(switches, "0[1-4]", collapse = "|")
 # Look at the data for these timestamps
 water_quality[grepl(pattern, water_quality$timestamp_raw), ]
 
-# The original timestamps (timestamps_raw) are not all plausible, e.g. 
-# "31.03.2019 03:00" appears twice! See the Details in ?read_wasserportal()
-# how this is treated.
+# The original timestamps (timestamps_raw) were not all plausible, e.g. 
+# for March 2019. This seems to have been fixed by the "wasserportal"!
+sum(water_quality$timestamp_raw != water_quality$timestamp_corr)
+
 }
