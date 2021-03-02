@@ -7,7 +7,8 @@
 read_wasserportal(
   station,
   variables = get_wasserportal_variables(station),
-  from_date = "2019-01-01",
+  from_date = as.character(Sys.Date() - 90L),
+  type = "single",
   include_raw_time = FALSE
 )
 }
@@ -20,7 +21,9 @@ read_wasserportal(
 
 \item{from_date}{\code{Date} object (or string in format "yyyy-mm-dd" that 
 can be converted to a \code{Date} object representing the first day for
-which to request data}
+which to request data. Default: \code{as.character(Sys.Date() - 90L)}}
+
+\item{type}{one of "single" (the default), "daily", "monthly"}
 
 \item{include_raw_time}{if \code{TRUE} the original time column and the 
 column with the corrected winter time are included in the output. The
@@ -51,7 +54,7 @@ variables <- kwb.read::get_wasserportal_variables()
 water_quality <- kwb.read::read_wasserportal(
   station = stations$MPS_Charlottenburg,
   variables = c(variables["Sauerstoffgehalt"], variables["Leitfaehigkeit"]),
-  from_date = "2019-03-01", include_raw_time = TRUE
+  from_date = as.character(Sys.Date() - 30L), include_raw_time = TRUE
 )
 
 # Look at the first few records
