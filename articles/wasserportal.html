@@ -105,8 +105,8 @@
 <span class="va">get_new_flow_data</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">date</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Sys.time.html">Sys.Date</a></span><span class="op">(</span><span class="op">)</span> <span class="op">-</span> <span class="fl">1L</span><span class="op">)</span>
 <span class="op">{</span>
   <span class="va">data</span> <span class="op">&lt;-</span> <span class="fu">kwb.read</span><span class="fu">::</span><span class="fu"><a href="../reference/read_wasserportal.html">read_wasserportal</a></span><span class="op">(</span>
-    station <span class="op">=</span> <span class="st">"5803200"</span>, <span class="co"># Tiefwerder </span>
-    variables <span class="op">=</span> <span class="st">"d"</span>, <span class="co"># Durchfluss </span>
+    station <span class="op">=</span> <span class="st">"149"</span>, <span class="co"># Tiefwerder </span>
+    variables <span class="op">=</span> <span class="st">"quality"</span>, <span class="co"># Durchfluss </span>
     from_date <span class="op">=</span> <span class="va">date</span> <span class="op">-</span> <span class="fl">1L</span> <span class="co"># Otherwise we start with 01:00 (in summer)</span>
   <span class="op">)</span>
   
