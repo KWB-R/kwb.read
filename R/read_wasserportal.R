@@ -37,14 +37,14 @@
 #' water_quality <- kwb.read::read_wasserportal(
 #'   station = stations$MPS_Charlottenburg,
 #'   variables = c(variables["Sauerstoffgehalt"], variables["Leitfaehigkeit"]),
-#'   from_date = as.character(Sys.Date() - 30L), include_raw_time = TRUE
+#'   from_date = as.character(Sys.Date() - 90L), include_raw_time = TRUE
 #' )
 #' 
 #' # Look at the first few records
 #' head(water_quality)
 #' 
 #' # Check the metadata
-#' kwb.utils::getAttribute(water_quality, "metadata")
+#' #kwb.utils::getAttribute(water_quality, "metadata")
 #' 
 #' # Set missing values to NA
 #' water_quality[water_quality == -777] <- NA
