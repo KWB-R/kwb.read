@@ -36,7 +36,7 @@
 #' water_quality <- kwb.read::read_wasserportal(
 #'   station = stations$MPS_Charlottenburg,
 #'   variables = c(variables["Sauerstoffgehalt"], variables["Leitfaehigkeit"]),
-#'   from_date = "2019-03-01", include_raw_time = TRUE
+#'   from_date = as.character(Sys.Date() - 30L), include_raw_time = TRUE
 #' )
 #' 
 #' # Look at the first few records
@@ -70,7 +70,8 @@
 #' # how this is treated.
 read_wasserportal <- function(
   station, variables = get_wasserportal_variables(station), 
-  from_date = "2019-01-01", include_raw_time = FALSE
+  from_date = as.character(Sys.Date() - 90L), type = "single", 
+  include_raw_time = FALSE
 )
 {
   #kwb.utils::assignPackageObjects("kwb.read")
