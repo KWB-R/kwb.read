@@ -47,3 +47,11 @@ stop_ <- function(...)
 {
   stop(..., call. = FALSE)
 }
+
+# stop_moved -------------------------------------------------------------------
+stop_moved <- function(name, package = "kwb.prep")
+{
+  stop(call. = FALSE, sprintf(
+    "The function '%s' has been moved to package '%s'", name, package
+  ))
+}
