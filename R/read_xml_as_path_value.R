@@ -12,7 +12,7 @@
 #'   and the text values of the XML elements in the second column.
 #' 
 #' @export
-#' 
+#' @importFrom xml2 read_xml xml_children xml_ns_strip xml_path xml_text
 #' @examples
 #' url <- "https://www.w3schools.com/xml/note.xml"
 #' 

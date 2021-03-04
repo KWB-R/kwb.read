@@ -27,7 +27,8 @@ Imports:
     kwb.db,
     kwb.en13508.2,
     kwb.fakin,
-    kwb.utils
+    kwb.utils,
+    xml2
 Suggests: 
     covr,
     knitr,
