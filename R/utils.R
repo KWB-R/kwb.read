@@ -1,20 +1,3 @@
-# assert_date ------------------------------------------------------------------
-assert_date <- function(x)
-{
-  if (! inherits(x, "Date")) {
-    
-    x <- try(as.Date(x))
-    
-    if (inherits(x, "try-error")) {
-      stop(call. = FALSE, sprintf(
-        "%s cannot be converted to a Date object!", deparse(substitute(x))
-      ))
-    }
-  }
-  
-  x
-}
-
 # remove_empty_columns ---------------------------------------------------------
 remove_empty_columns <- function(x)
 {
@@ -63,4 +46,12 @@ set_data_frame_column_names <- function(x, column_names = NULL)
 stop_ <- function(...)
 {
   stop(..., call. = FALSE)
+}
+
+# stop_moved -------------------------------------------------------------------
+stop_moved <- function(name, package = "kwb.prep")
+{
+  stop(call. = FALSE, sprintf(
+    "The function '%s' has been moved to package '%s'", name, package
+  ))
 }
