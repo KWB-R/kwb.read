@@ -412,7 +412,7 @@ hsGetGsData1 <- function(
   blockEndAt <- c((parameterLinesAt - 1)[-1], nrow(dataFrame))  
   
   ## Loop through data blocks
-  indices <- seq_len(length(blockBeginAt))
+  indices <- seq_along(blockBeginAt)
   
   for (i in indices) {    
     
@@ -629,7 +629,7 @@ hsGetGsData1 <- function(
     # Append "_1", "_2", ... to the parameter name
     parInfo$parName[indices.par] <- paste(
       parInfo$parName[indices.par], 
-      seq_len(length(indices.par)), 
+      seq_along(indices.par), 
       sep = "_"
     )
 
