@@ -230,7 +230,7 @@ hsGsData2ToList <- function(gsData2, dbg = FALSE)
     
     allPar <- gsData2[[mpID]]$allPars
     
-    for (i in seq_len(length(allPar$parID))) {
+    for (i in seq_along(allPar$parID)) {
       
       kwb.utils::catIf(dbg, sprintf(
         "mpID: %s, parNr. %d/%d\n", mpID, i, length(allPar$parID)
