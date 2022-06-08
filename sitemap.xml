@@ -1,177 +1,180 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>/404.html</loc>
+    <loc>https://kwb-r.github.io/kwb.read/404.html</loc>
   </url>
   <url>
-    <loc>/LICENSE-text.html</loc>
+    <loc>https://kwb-r.github.io/kwb.read/LICENSE-text.html</loc>
   </url>
   <url>
-    <loc>/LICENSE.html</loc>
+    <loc>https://kwb-r.github.io/kwb.read/LICENSE.html</loc>
   </url>
   <url>
-    <loc>/authors.html</loc>
+    <loc>https://kwb-r.github.io/kwb.read/authors.html</loc>
   </url>
   <url>
-    <loc>/index.html</loc>
+    <loc>https://kwb-r.github.io/kwb.read/index.html</loc>
   </url>
   <url>
-    <loc>/reference/BWB_RAIN_GAUGES.html</loc>
+    <loc>https://kwb-r.github.io/kwb.read/news/index.html</loc>
   </url>
   <url>
-    <loc>/reference/PATTERN_DATA.html</loc>
+    <loc>https://kwb-r.github.io/kwb.read/reference/BWB_RAIN_GAUGES.html</loc>
   </url>
   <url>
-    <loc>/reference/PATTERN_PARAMETER.html</loc>
+    <loc>https://kwb-r.github.io/kwb.read/reference/PATTERN_DATA.html</loc>
   </url>
   <url>
-    <loc>/reference/PATTERN_STATION.html</loc>
+    <loc>https://kwb-r.github.io/kwb.read/reference/PATTERN_PARAMETER.html</loc>
   </url>
   <url>
-    <loc>/reference/distanceToNeighbour.html</loc>
+    <loc>https://kwb-r.github.io/kwb.read/reference/PATTERN_STATION.html</loc>
   </url>
   <url>
-    <loc>/reference/extractRunoffData.html</loc>
+    <loc>https://kwb-r.github.io/kwb.read/reference/distanceToNeighbour.html</loc>
   </url>
   <url>
-    <loc>/reference/gaugeNamesShort.html</loc>
+    <loc>https://kwb-r.github.io/kwb.read/reference/extractRunoffData.html</loc>
   </url>
   <url>
-    <loc>/reference/getAggregatedBwbRainDataFromExcelFiles.html</loc>
+    <loc>https://kwb-r.github.io/kwb.read/reference/gaugeNamesShort.html</loc>
   </url>
   <url>
-    <loc>/reference/getBwbRainDataFromExcelFiles.html</loc>
+    <loc>https://kwb-r.github.io/kwb.read/reference/getAggregatedBwbRainDataFromExcelFiles.html</loc>
   </url>
   <url>
-    <loc>/reference/getGaugeDistances.html</loc>
+    <loc>https://kwb-r.github.io/kwb.read/reference/getBwbRainDataFromExcelFiles.html</loc>
   </url>
   <url>
-    <loc>/reference/getGaugeInfo.html</loc>
+    <loc>https://kwb-r.github.io/kwb.read/reference/getGaugeDistances.html</loc>
   </url>
   <url>
-    <loc>/reference/getPiColumnRenames.html</loc>
+    <loc>https://kwb-r.github.io/kwb.read/reference/getGaugeInfo.html</loc>
   </url>
   <url>
-    <loc>/reference/get_PI_data_Halensee.html</loc>
+    <loc>https://kwb-r.github.io/kwb.read/reference/getPiColumnRenames.html</loc>
   </url>
   <url>
-    <loc>/reference/get_overview_of_columns.html</loc>
+    <loc>https://kwb-r.github.io/kwb.read/reference/get_PI_data_Halensee.html</loc>
   </url>
   <url>
-    <loc>/reference/hsGetAllGsData1.html</loc>
+    <loc>https://kwb-r.github.io/kwb.read/reference/get_overview_of_columns.html</loc>
   </url>
   <url>
-    <loc>/reference/hsGetGsData1.html</loc>
+    <loc>https://kwb-r.github.io/kwb.read/reference/hsGetAllGsData1.html</loc>
   </url>
   <url>
-    <loc>/reference/hsGetGsData2.html</loc>
+    <loc>https://kwb-r.github.io/kwb.read/reference/hsGetGsData1.html</loc>
   </url>
   <url>
-    <loc>/reference/hsGsData1ToList.html</loc>
+    <loc>https://kwb-r.github.io/kwb.read/reference/hsGetGsData2.html</loc>
   </url>
   <url>
-    <loc>/reference/hsGsData2ToList.html</loc>
+    <loc>https://kwb-r.github.io/kwb.read/reference/hsGsData1ToList.html</loc>
   </url>
   <url>
-    <loc>/reference/index.html</loc>
+    <loc>https://kwb-r.github.io/kwb.read/reference/hsGsData2ToList.html</loc>
   </url>
   <url>
-    <loc>/reference/mdb_rain_meta.html</loc>
+    <loc>https://kwb-r.github.io/kwb.read/reference/index.html</loc>
   </url>
   <url>
-    <loc>/reference/merge_Neubrandenburg_data.html</loc>
+    <loc>https://kwb-r.github.io/kwb.read/reference/mdb_rain_meta.html</loc>
   </url>
   <url>
-    <loc>/reference/niceStationNames.html</loc>
+    <loc>https://kwb-r.github.io/kwb.read/reference/merge_Neubrandenburg_data.html</loc>
   </url>
   <url>
-    <loc>/reference/readAllBwbCorrections.html</loc>
+    <loc>https://kwb-r.github.io/kwb.read/reference/niceStationNames.html</loc>
   </url>
   <url>
-    <loc>/reference/readAllBwbCumulativeHeights.html</loc>
+    <loc>https://kwb-r.github.io/kwb.read/reference/readAllBwbCorrections.html</loc>
   </url>
   <url>
-    <loc>/reference/readAllBwbSignals.html</loc>
+    <loc>https://kwb-r.github.io/kwb.read/reference/readAllBwbCumulativeHeights.html</loc>
   </url>
   <url>
-    <loc>/reference/readBwbCorrFromCsv.html</loc>
+    <loc>https://kwb-r.github.io/kwb.read/reference/readAllBwbSignals.html</loc>
   </url>
   <url>
-    <loc>/reference/readBwbCorrFromExcel.html</loc>
+    <loc>https://kwb-r.github.io/kwb.read/reference/readBwbCorrFromCsv.html</loc>
   </url>
   <url>
-    <loc>/reference/readBwbRainCorrection.html</loc>
+    <loc>https://kwb-r.github.io/kwb.read/reference/readBwbCorrFromExcel.html</loc>
   </url>
   <url>
-    <loc>/reference/readBwbRainData.html</loc>
+    <loc>https://kwb-r.github.io/kwb.read/reference/readBwbRainCorrection.html</loc>
   </url>
   <url>
-    <loc>/reference/readBwbRainFromCsv.html</loc>
+    <loc>https://kwb-r.github.io/kwb.read/reference/readBwbRainData.html</loc>
   </url>
   <url>
-    <loc>/reference/readBwbRainFromCsv2.html</loc>
+    <loc>https://kwb-r.github.io/kwb.read/reference/readBwbRainFromCsv.html</loc>
   </url>
   <url>
-    <loc>/reference/readPackageFile.html</loc>
+    <loc>https://kwb-r.github.io/kwb.read/reference/readBwbRainFromCsv2.html</loc>
   </url>
   <url>
-    <loc>/reference/readYearlyRainHeightsFromOneCsvFile.html</loc>
+    <loc>https://kwb-r.github.io/kwb.read/reference/readPackageFile.html</loc>
   </url>
   <url>
-    <loc>/reference/read_BWB_rain_correction.html</loc>
+    <loc>https://kwb-r.github.io/kwb.read/reference/readYearlyRainHeightsFromOneCsvFile.html</loc>
   </url>
   <url>
-    <loc>/reference/read_BWB_rain_correction_long.html</loc>
+    <loc>https://kwb-r.github.io/kwb.read/reference/read_BWB_rain_correction.html</loc>
   </url>
   <url>
-    <loc>/reference/read_BWB_rain_correction_wide_day.html</loc>
+    <loc>https://kwb-r.github.io/kwb.read/reference/read_BWB_rain_correction_long.html</loc>
   </url>
   <url>
-    <loc>/reference/read_BWB_rain_correction_wide_gauge.html</loc>
+    <loc>https://kwb-r.github.io/kwb.read/reference/read_BWB_rain_correction_wide_day.html</loc>
   </url>
   <url>
-    <loc>/reference/read_BWB_rain_correction_wide_gauge_from_pdf.html</loc>
+    <loc>https://kwb-r.github.io/kwb.read/reference/read_BWB_rain_correction_wide_gauge.html</loc>
   </url>
   <url>
-    <loc>/reference/read_BWB_rain_correction_wide_gauge_group.html</loc>
+    <loc>https://kwb-r.github.io/kwb.read/reference/read_BWB_rain_correction_wide_gauge_from_pdf.html</loc>
   </url>
   <url>
-    <loc>/reference/read_Neubrandenburg_Data.html</loc>
+    <loc>https://kwb-r.github.io/kwb.read/reference/read_BWB_rain_correction_wide_gauge_group.html</loc>
   </url>
   <url>
-    <loc>/reference/read_Neubrandenburg_Data_from_Excel.html</loc>
+    <loc>https://kwb-r.github.io/kwb.read/reference/read_Neubrandenburg_Data.html</loc>
   </url>
   <url>
-    <loc>/reference/read_Neubrandenburg_Data_from_Excel_files.html</loc>
+    <loc>https://kwb-r.github.io/kwb.read/reference/read_Neubrandenburg_Data_from_Excel.html</loc>
   </url>
   <url>
-    <loc>/reference/read_SenatesGrabSampleCSV_long.html</loc>
+    <loc>https://kwb-r.github.io/kwb.read/reference/read_Neubrandenburg_Data_from_Excel_files.html</loc>
   </url>
   <url>
-    <loc>/reference/read_SenatesGrabSampleCSV_wide.html</loc>
+    <loc>https://kwb-r.github.io/kwb.read/reference/read_SenatesGrabSampleCSV_long.html</loc>
   </url>
   <url>
-    <loc>/reference/read_SenatesGrabSampleCsvFiles_long.html</loc>
+    <loc>https://kwb-r.github.io/kwb.read/reference/read_SenatesGrabSampleCSV_wide.html</loc>
   </url>
   <url>
-    <loc>/reference/read_SenatesGrabSampleCsvFiles_wide.html</loc>
+    <loc>https://kwb-r.github.io/kwb.read/reference/read_SenatesGrabSampleCsvFiles_long.html</loc>
   </url>
   <url>
-    <loc>/reference/read_cctv_from_xml_be.html</loc>
+    <loc>https://kwb-r.github.io/kwb.read/reference/read_SenatesGrabSampleCsvFiles_wide.html</loc>
   </url>
   <url>
-    <loc>/reference/read_qin_file.html</loc>
+    <loc>https://kwb-r.github.io/kwb.read/reference/read_cctv_from_xml_be.html</loc>
   </url>
   <url>
-    <loc>/reference/read_rain.html</loc>
+    <loc>https://kwb-r.github.io/kwb.read/reference/read_qin_file.html</loc>
   </url>
   <url>
-    <loc>/reference/read_xml_as_path_value.html</loc>
+    <loc>https://kwb-r.github.io/kwb.read/reference/read_rain.html</loc>
   </url>
   <url>
-    <loc>/reference/splitIntoBlocks.html</loc>
+    <loc>https://kwb-r.github.io/kwb.read/reference/read_xml_as_path_value.html</loc>
   </url>
   <url>
-    <loc>/reference/toGaugeInfo.html</loc>
+    <loc>https://kwb-r.github.io/kwb.read/reference/splitIntoBlocks.html</loc>
+  </url>
+  <url>
+    <loc>https://kwb-r.github.io/kwb.read/reference/toGaugeInfo.html</loc>
   </url>
 </urlset>
