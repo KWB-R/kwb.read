@@ -3,6 +3,8 @@
 [![codecov](https://codecov.io/github/KWB-R/kwb.read/branch/master/graphs/badge.svg)](https://codecov.io/github/KWB-R/kwb.read)
 [![Project Status](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://www.tidyverse.org/lifecycle/#experimental)
 [![CRAN_Status_Badge](https://www.r-pkg.org/badges/version/kwb.read)]()
+[![R-Universe_Status_Badge](https://kwb-r.r-universe.dev/badges/kwb.read)](https://kwb-r.r-universe.dev/)
+
 
 Functions reading specific input data, e.g. files provided by BWB. 
 E.g. rain data (5 min values) and rain correction tables (on daily basis).
