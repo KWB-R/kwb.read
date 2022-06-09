@@ -1,6 +1,6 @@
 Package: kwb.read
 Title: Functions reading specific input data, e.g. files provided by BWB
-Version: 0.0.0.9000
+Version: 0.1.0
 Authors@R: c(
     person("Hauke", "Sonnenberg", , "hauke.sonnenberg@kompetenz-wasser.de", role = c("aut", "cre"),
            comment = c(ORCID = "0000-0001-9134-2871")),
@@ -8,7 +8,7 @@ Authors@R: c(
            comment = "0000-0003-0647-7726"),
     person("Franziska", "Knoche", , "franziska.knoche@kompetenz-wasser.de", role = "ctb"),
     person("FAKIN", role = "fnd"),
-    person("FAKIN", role = "fnd"),
+    person("KURAS", role = "fnd"),
     person("Kompetenzzentrum Wasser Berlin gGmbH", role = "cph")
   )
 Description: Functions reading specific input data, e.g. files provided by
