@@ -4,8 +4,13 @@
 \alias{getBwbRainDataFromExcelFiles}
 \title{Get BWB Rain Data From Excel Files}
 \usage{
-getBwbRainDataFromExcelFiles(xlsPaths, tableName = "Niederschlag$",
-  columnNames = NULL, use2007Driver = FALSE, dbg = FALSE)
+getBwbRainDataFromExcelFiles(
+  xlsPaths,
+  tableName = "Niederschlag$",
+  columnNames = NULL,
+  use2007Driver = FALSE,
+  dbg = FALSE
+)
 }
 \arguments{
 \item{xlsPaths}{(vector of) full path(s) to Excel file(s)}

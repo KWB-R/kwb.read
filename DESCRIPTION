@@ -1,28 +1,23 @@
 Package: kwb.read
-Title: Functions reading specific input data, e.g. files
-    provided by BWB
+Title: Functions reading specific input data, e.g. files provided by BWB
 Version: 0.0.0.9000
-Authors@R: 
-    c(person(given = "Hauke",
-             family = "Sonnenberg",
-             role = c("aut", "cre"),
-             email = "hauke.sonnenberg@kompetenz-wasser.de",
-             comment = c(ORCID = "0000-0001-9134-2871")),
-      person(given = "Kompetenzzentrum Wasser Berlin gGmbH",
-             role = "cph"),
-      person(given = "Michael",
-             family = "Rustler",
-             role = "ctb",
-             email = "michael.rustler@kompetenz-wasser.de",
-             comment = "0000-0003-0647-7726"))
-Description: Functions reading specific input data, e.g. files
-    provided by BWB.  E.g. rain data (5 min values) and rain correction
-    tables (on daily basis).
+Authors@R: c(
+    person("Hauke", "Sonnenberg", , "hauke.sonnenberg@kompetenz-wasser.de", role = c("aut", "cre"),
+           comment = c(ORCID = "0000-0001-9134-2871")),
+    person("Michael", "Rustler", , "michael.rustler@kompetenz-wasser.de", role = "ctb",
+           comment = "0000-0003-0647-7726"),
+    person("Franziska", "Knoche", , "franziska.knoche@kompetenz-wasser.de", role = "ctb"),
+    person("FAKIN", role = "fnd"),
+    person("FAKIN", role = "fnd"),
+    person("Kompetenzzentrum Wasser Berlin gGmbH", role = "cph")
+  )
+Description: Functions reading specific input data, e.g. files provided by
+    BWB.  E.g. rain data (5 min values) and rain correction tables (on
+    daily basis).
 License: MIT + file LICENSE
 URL: https://github.com/KWB-R/kwb.read
 BugReports: https://github.com/KWB-R/kwb.read/issues
 Imports: 
-    httr,
     kwb.base,
     kwb.datetime,
     kwb.db,
@@ -31,7 +26,11 @@ Imports:
     kwb.utils,
     xml2
 Suggests: 
-    covr
+    covr,
+    knitr,
+    rmarkdown
+VignetteBuilder: 
+    knitr
 Remotes: 
     github::kwb-r/kwb.base,
     github::kwb-r/kwb.datetime,
@@ -40,4 +39,4 @@ Remotes:
     github::kwb-r/kwb.fakin,
     github::kwb-r/kwb.utils
 Encoding: UTF-8
-RoxygenNote: 6.1.1
+RoxygenNote: 7.1.2

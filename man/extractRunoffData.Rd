@@ -4,8 +4,7 @@
 \alias{extractRunoffData}
 \title{Separation of Fixed Width Columns}
 \usage{
-extractRunoffData(runoff_raw, columnWidth = 8, columnNames = NULL,
-  version = 1)
+extractRunoffData(runoff_raw, columnWidth = 8, columnNames = NULL, version = 1)
 }
 \arguments{
 \item{runoff_raw}{vector of character representing the text lines containing

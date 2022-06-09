@@ -4,8 +4,7 @@
 \alias{read_BWB_rain_correction}
 \title{Read Correction Data}
 \usage{
-read_BWB_rain_correction(files, type = (BWB_rain_correction_types())[1],
-  ...)
+read_BWB_rain_correction(files, type = (BWB_rain_correction_types())[1], ...)
 }
 \arguments{
 \item{files}{paths to input files}

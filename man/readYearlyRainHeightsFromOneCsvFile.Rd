@@ -4,8 +4,7 @@
 \alias{readYearlyRainHeightsFromOneCsvFile}
 \title{Read Yearly Rain Heights From One Csv File}
 \usage{
-readYearlyRainHeightsFromOneCsvFile(csv, sep = ",",
-  dateformat = "\%d/\%m/\%Y")
+readYearlyRainHeightsFromOneCsvFile(csv, sep = ",", dateformat = "\%d/\%m/\%Y")
 }
 \arguments{
 \item{csv}{full path to csv file}

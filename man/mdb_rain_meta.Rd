@@ -2,10 +2,12 @@
 % Please edit documentation in R/rain_meta.R
 \name{mdb_rain_meta}
 \alias{mdb_rain_meta}
-\title{Path to Rain Meta Database (on KWB's server)}
+\title{Path to Rain Meta Database (on KWB's server). Name of KWB server needs to 
+be defined in environment variable \code{SERVERNAME}}
 \usage{
 mdb_rain_meta()
 }
 \description{
-Path to Rain Meta Database (on KWB's server)
+Path to Rain Meta Database (on KWB's server). Name of KWB server needs to 
+be defined in environment variable \code{SERVERNAME}
 }

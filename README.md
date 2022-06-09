@@ -1,8 +1,9 @@
-[![Appveyor build Status](https://ci.appveyor.com/api/projects/status/ovio4dtofe4doeql/branch/master?svg=true)](https://ci.appveyor.com/project/KWB-R/kwb-read/branch/master)
-[![Travis build Status](https://travis-ci.org/KWB-R/kwb.read.svg?branch=master)](https://travis-ci.org/KWB-R/kwb.read)
+[![R-CMD-check](https://github.com/KWB-R/kwb.read/workflows/R-CMD-check/badge.svg)](https://github.com/KWB-R/kwb.read/actions?query=workflow%3AR-CMD-check)
+[![pkgdown](https://github.com/KWB-R/kwb.read/workflows/pkgdown/badge.svg)](https://github.com/KWB-R/kwb.read/actions?query=workflow%3Apkgdown)
 [![codecov](https://codecov.io/github/KWB-R/kwb.read/branch/master/graphs/badge.svg)](https://codecov.io/github/KWB-R/kwb.read)
 [![Project Status](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://www.tidyverse.org/lifecycle/#experimental)
 [![CRAN_Status_Badge](https://www.r-pkg.org/badges/version/kwb.read)]()
+[![R-Universe_Status_Badge](https://kwb-r.r-universe.dev/badges/kwb.read)](https://kwb-r.r-universe.dev/)
 
 # kwb.read
 

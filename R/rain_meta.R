@@ -43,7 +43,7 @@ distanceToNeighbour <- function(mdist)
 #' @param dbg if \code{TRUE} (default), debug messages are shown
 #' 
 #' @export
-#' 
+#' @importFrom kwb.utils catIf
 getGaugeDistances <- function(
   gaugeInfo = getGaugeInfo(),
   gauges = c(
@@ -116,7 +116,7 @@ getGaugeDistances <- function(
 #' @return data frame with columns \code{pw, xpos, ypos}
 #' 
 #' @export
-#' 
+#' @importFrom kwb.db sqlForSelect hsSqlQuery
 getGaugeInfo <- function(mdb = mdb_rain_meta())
 {
   ## Get coordinates of gauges
@@ -139,7 +139,7 @@ getGaugeInfo <- function(mdb = mdb_rain_meta())
 #' 
 #' @param mdb path to MS Access Database Containing Meta Data
 #' @export
-#' 
+#' @importFrom kwb.db hsGetTable 
 BWB_RAIN_GAUGES <- function(mdb = mdb_rain_meta())
 {
   result <- kwb.db::hsGetTable( 
@@ -157,9 +157,12 @@ BWB_RAIN_GAUGES <- function(mdb = mdb_rain_meta())
 
 # mdb_rain_meta ----------------------------------------------------------------
 
-#' Path to Rain Meta Database (on KWB's server)
-#' 
+#' Path to Rain Meta Database (on KWB's server). Name of KWB server needs to 
+#' be defined in environment variable \code{SERVERNAME}
+#' @export
 mdb_rain_meta <- function()
 {
-  "//moby/miacso$/Daten/ACCESS/Regen/0_META/BWB_Rain_Meta.mdb"
+  sprintf("//%s/miacso$/Daten/ACCESS/Regen/0_META/BWB_Rain_Meta.mdb",
+          Sys.getenv("SERVERNAME")
+          )
 }

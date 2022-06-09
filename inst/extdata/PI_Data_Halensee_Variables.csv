@@ -1,20 +1,20 @@
-PI_ID;PI_Name;Unit;SiteCode;VariableCode;Method
-0309RBF6100CL01ML01;03.09 Wil m - Pegel  Zulauf;mNN;Wil_Zulauf;H;
-0309RBF6100CL02ML01;03.09 Wil m - Pegel 1 SWP;mNN;Wil_SWP1;H;
-0309RBF6100CL03ML01;03.09 Wil m - Pegel 2 SWP;mNN;Wil_SWP2;H;
-0309RBF6100CL04ML01;03.09 Wil m - Pegel RWP;mNN;Wil_RWP;H;
-0309RBF6100CL05ML01;03.09 Wil m - Hydrostat.Pegel Bodenfilter 1;mNN;Wil_BF1_Hydro;H;Hydrostat
-0309RBF6100CL06ML01;03.09 Wil m - Hydrostat.Pegel Bodenfilter 2;mNN;Wil_BF2_Hydro;H;Hydrostat
-0309RBF6100CL07ML01;03.09 Wil m - Radar Pegel Bodenfilter 1;mNN;Wil_BF1_Radar;H;Radar
-0309RBF6100CL08ML01;03.09 Wil m - Radar Pegel Bodenfilter 2;mNN;Wil_BF2_Radar;H;Radar
-0309RBF6200CF01MF01;03.09 Wil m - Durchfluﬂ Abschlag vor Absetzbecken;l/s;Wil_AB_Abschlag;Q;
-0309RBF6200CF02MF01;03.09 Wil m - Durchfluﬂ Zulauf Absetzbecken;l/s;Wil_AB_Zulauf;Q;
-0309RBF6200CF03MF01;03.09 Wil m - Durchfluﬂ Schmutzwasserpumpwerk;l/s;Wil_PW;Q;
-0309RBF6200CF04MF01;03.09 Wil m - Durchfluﬂ Ablauf Bodenfilter;l/s;Wil_BF_Ablauf;Q;
-0309RBF6200CF05MF01;03.09 Wil m - Durchfluﬂ Abschlag vor Pumpwerk;l/s;Wil_PW_Abschlag;Q;
-0309RBF6200CF06MF01;03.09 Wil m - Durchfluﬂ ‹berlauf RKB;l/s;Wil_KUE;Q;
-0301HPw6300LZ01ML01#C1;03.01 Wil - Regen pro Tag;mm;Wil_Regen;N;
-0308UPw6300LZ01ML01#C1;03.08 Wil a - Regen pro Tag;mm;Wil_a_Regen;N;
-0301HPw6300LZ01ML01;03.01 Wil - Regenmesser;mm;Wil_Regen;N;
-0308UPw6300LZ01ML01;03.08 Wil a - Regenmesser;mm;Wil_Regen_a;N;
-0309RBF6300LZ01ML01;03.09 Wilm m - Regenmesser;mm;RBF_Regen;N;
+PI_ID,PI_Name,Unit,SiteCode,VariableCode,Method
+0309RBF6100CL01ML01,03.09 Wil m - Pegel  Zulauf,mNN,Wil_Zulauf,H,
+0309RBF6100CL02ML01,03.09 Wil m - Pegel 1 SWP,mNN,Wil_SWP1,H,
+0309RBF6100CL03ML01,03.09 Wil m - Pegel 2 SWP,mNN,Wil_SWP2,H,
+0309RBF6100CL04ML01,03.09 Wil m - Pegel RWP,mNN,Wil_RWP,H,
+0309RBF6100CL05ML01,03.09 Wil m - Hydrostat.Pegel Bodenfilter 1,mNN,Wil_BF1_Hydro,H,Hydrostat
+0309RBF6100CL06ML01,03.09 Wil m - Hydrostat.Pegel Bodenfilter 2,mNN,Wil_BF2_Hydro,H,Hydrostat
+0309RBF6100CL07ML01,03.09 Wil m - Radar Pegel Bodenfilter 1,mNN,Wil_BF1_Radar,H,Radar
+0309RBF6100CL08ML01,03.09 Wil m - Radar Pegel Bodenfilter 2,mNN,Wil_BF2_Radar,H,Radar
+0309RBF6200CF01MF01,03.09 Wil m - Durchfluﬂ Abschlag vor Absetzbecken,l/s,Wil_AB_Abschlag,Q,
+0309RBF6200CF02MF01,03.09 Wil m - Durchfluﬂ Zulauf Absetzbecken,l/s,Wil_AB_Zulauf,Q,
+0309RBF6200CF03MF01,03.09 Wil m - Durchfluﬂ Schmutzwasserpumpwerk,l/s,Wil_PW,Q,
+0309RBF6200CF04MF01,03.09 Wil m - Durchfluﬂ Ablauf Bodenfilter,l/s,Wil_BF_Ablauf,Q,
+0309RBF6200CF05MF01,03.09 Wil m - Durchfluﬂ Abschlag vor Pumpwerk,l/s,Wil_PW_Abschlag,Q,
+0309RBF6200CF06MF01,03.09 Wil m - Durchfluﬂ ‹berlauf RKB,l/s,Wil_KUE,Q,
+0301HPw6300LZ01ML01#C1,03.01 Wil - Regen pro Tag,mm,Wil_Regen,N,
+0308UPw6300LZ01ML01#C1,03.08 Wil a - Regen pro Tag,mm,Wil_a_Regen,N,
+0301HPw6300LZ01ML01,03.01 Wil - Regenmesser,mm,Wil_Regen,N,
+0308UPw6300LZ01ML01,03.08 Wil a - Regenmesser,mm,Wil_Regen_a,N,
+0309RBF6300LZ01ML01,03.09 Wilm m - Regenmesser,mm,RBF_Regen,N,

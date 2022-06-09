@@ -186,7 +186,7 @@ niceStationNames <- function(stations)
 {
   kwb.utils::multiSubstitute(stations, list(
     "Berlin" = "Bln", 
-    "\u00F6" = "oe",
+    "\xF6" = "oe",
     "\\s+" = ""
   ))
 }
@@ -208,7 +208,7 @@ gaugeNamesShort <- function(colnames, underscore.rm = FALSE)
     colnames <- gsub(pattern, "", colnames)
   }
   
-  colnames <- gsub("\u00F6", "oe", colnames)
+  colnames <- gsub("\xF6", "oe", colnames)
   
   if (isTRUE(underscore.rm)) {
     

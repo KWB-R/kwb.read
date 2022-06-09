@@ -587,7 +587,7 @@ readYearlyRainHeightsFromOneCsvFile <- function(
     csv, nrows = 3, sep = sep, stringsAsFactors = FALSE
   )
 
-  cols <- which(header[2, ] == "Regenh\u00F6he")
+  cols <- which(header[2, ] == "Regenh\xF6he")
   
   stations <- niceStationNames(header[1, cols])
 

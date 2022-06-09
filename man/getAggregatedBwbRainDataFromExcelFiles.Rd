@@ -4,9 +4,14 @@
 \alias{getAggregatedBwbRainDataFromExcelFiles}
 \title{Get Aggregated BWB Rain Data From Excel Files}
 \usage{
-getAggregatedBwbRainDataFromExcelFiles(rain.xls.files, tableName,
-  aggregation.interval = NA, columnNames = NULL,
-  use2007Driver = FALSE, dbg = FALSE)
+getAggregatedBwbRainDataFromExcelFiles(
+  rain.xls.files,
+  tableName,
+  aggregation.interval = NA,
+  columnNames = NULL,
+  use2007Driver = FALSE,
+  dbg = FALSE
+)
 }
 \arguments{
 \item{rain.xls.files}{vector of full paths to xls files}

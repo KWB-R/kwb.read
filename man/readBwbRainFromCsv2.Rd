@@ -4,8 +4,13 @@
 \alias{readBwbRainFromCsv2}
 \title{Read BWB rain data from CSV file}
 \usage{
-readBwbRainFromCsv2(file, sep = ";", country = "de",
-  date.format = "\%d.\%m.\%Y \%H:\%M", dbg = TRUE)
+readBwbRainFromCsv2(
+  file,
+  sep = ";",
+  country = "de",
+  date.format = "\%d.\%m.\%Y \%H:\%M",
+  dbg = TRUE
+)
 }
 \arguments{
 \item{file}{full path to CSV file}

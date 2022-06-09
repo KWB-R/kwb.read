@@ -4,8 +4,12 @@
 \alias{read_Neubrandenburg_Data}
 \title{Join Data from Multiple Excel Files}
 \usage{
-read_Neubrandenburg_Data(xls.dir, area.Gruendach.m2, area.Kiesdach.m2,
-  pattern = "\\\\.xlsx$")
+read_Neubrandenburg_Data(
+  xls.dir,
+  area.Gruendach.m2,
+  area.Kiesdach.m2,
+  pattern = "\\\\.xlsx$"
+)
 }
 \arguments{
 \item{xls.dir}{path to directory containing Excel files to be read}
