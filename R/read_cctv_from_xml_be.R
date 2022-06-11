@@ -9,7 +9,8 @@
 #'   e.g. required by the RERAU evaluation functions in \code{kwb.rerau}. The
 #'   default is \code{FALSE}.
 #' @param dbg if \code{TRUE} (default), debug messages are shown
-#' 
+#' @importFrom janitor make_clean_names
+#' @importFrom kwb.utils catIf fullySorted moveColumnsToFront noFactorDataFrame
 #' @export
 #' 
 read_cctv_from_xml_be <- function(files, as_is = FALSE, dbg = TRUE)
@@ -35,7 +36,7 @@ read_cctv_from_xml_be <- function(files, as_is = FALSE, dbg = TRUE)
     })
   })
 
-  names(contents) <- kwb.fakin:::clean_file_name(basename(files))
+  names(contents) <- janitor::make_clean_names(basename(files))
   
   # Which files could not be read correctly?
   failed <- sapply(contents, inherits, "try-error")
