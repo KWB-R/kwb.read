@@ -23,6 +23,7 @@ Imports:
     kwb.datetime,
     kwb.db,
     kwb.en13508.2,
+    kwb.file,
     kwb.utils,
     xml2
 Suggests: 

@@ -95,6 +95,7 @@ read_cctv_from_xml_be <- function(files, as_is = FALSE, dbg = TRUE)
 }
 
 # simplify_paths ---------------------------------------------------------------
+#' @importFrom kwb.utils multiSubstitute
 simplify_paths <- function(x)
 {
   substitutions <- list(
@@ -138,6 +139,7 @@ simplify_paths <- function(x)
 }
 
 # merge_contents_with_file_info ------------------------------------------------
+#' @importFrom kwb.utils setColumns
 merge_contents_with_file_info <- function(contents)
 {
   do.call(rbind, lapply(names(contents), function(name) {
@@ -149,6 +151,7 @@ merge_contents_with_file_info <- function(contents)
 }
 
 # split_path_value_data --------------------------------------------------------
+#' @importFrom kwb.utils selectColumns
 split_path_value_data <- function(path_value)
 {
   # Select the paths only
@@ -186,6 +189,7 @@ to_table_of_inspections <- function(path_value_inspection)
 }
 
 # split_path_to_subdirs --------------------------------------------------------
+#' @importFrom kwb.utils selectColumns setColumns
 split_path_to_subdirs <- function(path_value, key_columns)
 {
   paths <- kwb.utils::selectColumns(path_value, "path")
@@ -224,6 +228,8 @@ get_too_deep <- function(x, max_depth)
 }
 
 # to_subdir_data ---------------------------------------------------------------
+#' @importFrom kwb.utils asNoFactorDataFrame
+#' @importFrom kwb.file to_subdir_matrix 
 to_subdir_data <- function(paths, column_names = NULL, dbg = FALSE)
 {
   subdirs <- kwb.utils::asNoFactorDataFrame(kwb.file::to_subdir_matrix(paths))
@@ -232,6 +238,8 @@ to_subdir_data <- function(paths, column_names = NULL, dbg = FALSE)
 }
 
 # reshape_to_wide --------------------------------------------------------------
+#' @importFrom kwb.utils resetRowNames
+#' @importFrom stats reshape
 reshape_to_wide <- function(x, timevar = "Variable")
 {
   idvar <- setdiff(names(x), c(timevar, "Value"))
@@ -249,6 +257,7 @@ reshape_to_wide <- function(x, timevar = "Variable")
 }
 
 # rearrange_columns ------------------------------------------------------------
+#' @importFrom kwb.utils moveToFront
 rearrange_columns <- function(data_frame, keys = NULL)
 {
   keys <- intersect(names(data_frame), keys)
@@ -258,6 +267,7 @@ rearrange_columns <- function(data_frame, keys = NULL)
 }
 
 # to_table_of_observations -----------------------------------------------------
+#' @importFrom kwb.utils catAndRun isNaOrEmpty selectColumns
 to_table_of_observations <- function(path_value_observation, dbg = TRUE)
 {
   #kwb.utils::assignPackageObjects("kwb.read")
@@ -314,6 +324,7 @@ is_three_letter_code_path <- function(xml_path)
 }
 
 # split_code_variable ----------------------------------------------------------
+#' @importFrom kwb.utils selectColumns setColumns
 split_code_variable <- function(subdirs_value)
 {
   # Get values from column "Variable"
@@ -342,6 +353,7 @@ split_code_variable <- function(subdirs_value)
 }
 
 # stop_on_invalid_codes --------------------------------------------------------
+#' @importFrom kwb.en13508.2 getCodes
 stop_on_invalid_codes <- function(codes)
 {
   valid_codes <- sort(unique(kwb.en13508.2::getCodes()$Code))
@@ -350,29 +362,28 @@ stop_on_invalid_codes <- function(codes)
 }
 
 # get_continuous_defect --------------------------------------------------------
+#' @importFrom kwb.utils pasteColumns0
 get_continuous_defect <- function(observations)
 {
   columns <- paste0("ContDefect_", c("Type", "Code"))
   
-  if (all(columns %in% names(observations))) {
-    
-    result <- rep("", nrow(observations))
-    
-    defect_codes <- kwb.utils::pasteColumns0(observations, columns)
-    
-    is_available <- ! is.na(observations[[columns[1]]])
-    
-    result[is_available] <- defect_codes[is_available]
-    
-    result
-    
-  } else {
-    
-    NULL
+  if (!all(columns %in% names(observations))) {
+    return(NULL)
   }
+  
+  result <- rep("", nrow(observations))
+  
+  defect_codes <- kwb.utils::pasteColumns0(observations, columns)
+  
+  is_available <- ! is.na(observations[[columns[1]]])
+  
+  result[is_available] <- defect_codes[is_available]
+  
+  result
 }
 
 # convert_types ----------------------------------------------------------------
+#' @importFrom kwb.utils catAndRun stringList
 convert_types <- function(df)
 {
   # Names of columns to be converted to numeric
@@ -412,6 +423,7 @@ convert_types <- function(df)
 }
 
 # rename_for_scoring -----------------------------------------------------------
+#' @importFrom kwb.utils moveColumnsToFront renameColumns
 rename_for_scoring <- function(observations)
 {
   renamings <- list(
@@ -439,6 +451,7 @@ rename_for_scoring <- function(observations)
 }
 
 # merge_remarks ----------------------------------------------------------------
+#' @importFrom kwb.utils parallelNonNA removeColumns renameColumns
 merge_remarks <- function(observations)
 {
   if (all(c("REMARKS", "Remarks") %in% names(observations))) {
@@ -466,7 +479,7 @@ merge_remarks <- function(observations)
 #'   frames in \code{x}. In a row \emph{i} the data frame contains "x" in those 
 #'   columns that are contained in the \emph{i}-th data frame in list \code{x}
 #'   and an empty string otherwise.
-#'   
+#' @importFrom kwb.utils asNoFactorDataFrame
 #' @export
 #' 
 #' @examples 
