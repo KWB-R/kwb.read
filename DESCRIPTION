@@ -37,6 +37,7 @@ Remotes:
     github::kwb-r/kwb.datetime,
     github::kwb-r/kwb.db,
     github::kwb-r/kwb.en13508.2,
+    github::kwb-r/kwb.file,
     github::kwb-r/kwb.utils
 Encoding: UTF-8
 RoxygenNote: 7.1.2
