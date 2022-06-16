@@ -74,8 +74,12 @@ description of the csv file see the Details section below.</p>
     <h2 id="arguments">Arguments<a class="anchor" aria-label="anchor" href="#arguments"></a></h2>
     <dl><dt>csv</dt>
 <dd><p>full path to csv file</p></dd>
+
+
 <dt>sep</dt>
 <dd><p>separator in csv file, e.g. ";" or ","</p></dd>
+
+
 <dt>dateFormat</dt>
 <dd><p>date format specifier describing the format in which dates 
 are represented in the csv file. Use placeholders , <code>"%d"</code> (day), 
@@ -83,8 +87,12 @@ are represented in the csv file. Use placeholders , <code>"%d"</code> (day),
 year) to describe the date format. <code>"%d.%m.%Y"</code>,
 <code>"%d/%m/%y"</code>, <code>"%Y-%m-%d"</code> are examples for valid format
 specifiers.</p></dd>
+
+
 <dt>dec</dt>
 <dd><p>decimal character: "." or ","</p></dd>
+
+
 <dt>data.block.number</dt>
 <dd><p>if the file contains data for more than one 
 monitoring point, <em>data.block.number</em> needs to be an integer number 
@@ -93,12 +101,19 @@ in the file. Only data of monitoring point corresponding to the given
 number are extracted. If <em>data.block.number</em> is NA (default) it is 
 expected that the file contains data for only one monitoring point. The 
 program will stop if data is provided for more than one monitoring point</p></dd>
+
+
 <dt>dbg</dt>
 <dd><p>if <code>TRUE</code> (default), debug messages are shown</p></dd>
+
 </dl></div>
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
-    <p>Grab sample data is returned in forms of a list, e.g.:</p><div class="sourceCode"><pre><code>
+    
+
+<p>Grab sample data is returned in forms of a list, e.g.:</p>
+<p></p>
+<div class="sourceCode"><pre><code>
   $ moniPoint:List of 2
   ..$ mpID  : chr "110"
   ..$ mpName: chr "M&lt;ue&gt;ggelspree, F&lt;ae&gt;hre Rahnsdorf (0,5 m)"
@@ -128,8 +143,14 @@ program will stop if data is provided for more than one monitoring point</p></dd
   .. ..$ parVal : num [1:238] 170 80 50 110 100 190 140 180 200 200 ...
   .. ..$ parLim : chr [1:238] "" "" "" "" ...
   ...
-  </code></pre></div><p>Within the sub-structures representing the parameters, <code>parTxt</code> contains
-the values in text format as they were read from the file, <code>parVal</code>contains the values as they were converted from text to double and
+  </code></pre></div>
+
+
+<p>Within the sub-structures representing the parameters, <code>parTxt</code> contains
+the values in text format as they were read from the file, <code>parVal</code></p>
+
+
+<p>contains the values as they were converted from text to double and
 <code>parLim</code> contains the characters indicating underrunning or exceedance
 of detection limits, as they were extracted from <code>parTxt</code>.</p>
     </div>
@@ -188,7 +209,7 @@ Export Parameterwerte;
 </div>
 
 <div class="pkgdown-footer-right">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.4.</p>
 </div>
 
     </footer></div>

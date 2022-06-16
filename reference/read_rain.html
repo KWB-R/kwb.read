@@ -69,33 +69,50 @@
     <dl><dt>directory</dt>
 <dd><p>directory containing excel files from which rain data are
 read. Default: <code>kwb.utils::resolve("RAIN_DIR", dictionary)</code></p></dd>
+
+
 <dt>pattern</dt>
 <dd><p>file name pattern matching names of files to be read. Default:
 <code>kwb.utils::resolve("RAIN_XLS_PATTERN", dictionary)</code></p></dd>
+
+
 <dt>tableName</dt>
 <dd><p>name of sheet in the excel files containing the rain data.
 Default: <code>kwb.utils::resolve("RAIN_XLS_TABLE", dictionary)</code></p></dd>
+
+
 <dt>dictionary</dt>
 <dd><p>list of key/value pairs that can be used as a dictionary to
 look up the following keywords (if <em>directory</em>, <em>pattern</em>, 
 <em>tableName</em> are not given): RAIN_DIR, RAIN_XLS_PATTERN, RAIN_XLS_TABLE</p></dd>
+
+
 <dt>rain.xls.files</dt>
 <dd><p>full paths to xls or xlsx files to be read. If given,
 these paths are used. Otherwise all files in <em>directory</em> matching the
 filename <em>pattern</em> are used.</p></dd>
+
+
 <dt>aggregation.interval</dt>
 <dd><p>aggregation interval in seconds. Default: 
 settings$rain.aggregation.interval</p></dd>
+
+
 <dt>settings</dt>
 <dd><p>list that may contain arguments to this function in elements
 <code>rain.aggregation.interval</code> or <code>dictionary</code></p></dd>
+
+
 <dt>use2007Driver</dt>
 <dd><p>passed to
 <code><a href="getAggregatedBwbRainDataFromExcelFiles.html">getAggregatedBwbRainDataFromExcelFiles</a></code></p></dd>
+
 </dl></div>
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
-    <p>data frame with column <code>DateTime</code> containing timestamps in UTC 
+    
+
+<p>data frame with column <code>DateTime</code> containing timestamps in UTC 
   timezone but representing Berlin normal (= winter) time.</p>
     </div>
 
@@ -108,7 +125,7 @@ settings$rain.aggregation.interval</p></dd>
 </div>
 
 <div class="pkgdown-footer-right">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.4.</p>
 </div>
 
     </footer></div>
