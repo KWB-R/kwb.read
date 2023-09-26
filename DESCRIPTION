@@ -1,6 +1,6 @@
 Package: kwb.read
 Title: Functions reading specific input data, e.g. files provided by BWB
-Version: 0.1.0
+Version: 0.2.0
 Authors@R: c(
     person("Hauke", "Sonnenberg", , "hauke.sonnenberg@kompetenz-wasser.de", role = c("aut", "cre"),
            comment = c(ORCID = "0000-0001-9134-2871")),
@@ -18,11 +18,12 @@ License: MIT + file LICENSE
 URL: https://github.com/KWB-R/kwb.read
 BugReports: https://github.com/KWB-R/kwb.read/issues
 Imports: 
+    janitor,
     kwb.base,
     kwb.datetime,
     kwb.db,
     kwb.en13508.2,
-    kwb.fakin,
+    kwb.file,
     kwb.utils,
     xml2
 Suggests: 
@@ -36,7 +37,7 @@ Remotes:
     github::kwb-r/kwb.datetime,
     github::kwb-r/kwb.db,
     github::kwb-r/kwb.en13508.2,
-    github::kwb-r/kwb.fakin,
+    github::kwb-r/kwb.file,
     github::kwb-r/kwb.utils
 Encoding: UTF-8
-RoxygenNote: 7.1.2
+RoxygenNote: 7.2.3
