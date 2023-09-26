@@ -10,8 +10,7 @@ read_rain(
   tableName = kwb.utils::resolve("RAIN_XLS_TABLE", dictionary),
   dictionary = kwb.utils::selectElements(settings, "dictionary"),
   rain.xls.files = dir(directory, pattern, full.names = TRUE),
-  aggregation.interval = kwb.utils::selectElements(settings,
-    "rain.aggregation.interval"),
+  aggregation.interval = kwb.utils::selectElements(settings, "rain.aggregation.interval"),
   settings = NULL,
   use2007Driver = TRUE
 )
